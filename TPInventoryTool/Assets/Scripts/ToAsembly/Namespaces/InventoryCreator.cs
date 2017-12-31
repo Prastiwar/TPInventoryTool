@@ -7,12 +7,12 @@ using TP_Inventory_Slot;
 
 public class InventoryCreator : MonoBehaviour
 {
-    [Header("Put there PARENT of all slots")]
+    [Header("Put there PARENT of all slot's PARENTS")]
     [SerializeField] Transform slotTransform;
-    [Header("Slots will automatically load")]
-    [SerializeField] List<Slot> slots = new List<Slot>();
     [Header("Put there your custom items")]
     [SerializeField] List<Item> items = new List<Item>();
+
+    [HideInInspector] public List<Slot> slots = new List<Slot>();
 
     void OnValidate()
     {
