@@ -22,6 +22,8 @@ public class ItemEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
+
         EditorGUILayout.LabelField("Custom Item");
         item.ID = EditorGUILayout.IntField("Unique ID", item.ID);
 
@@ -37,6 +39,8 @@ public class ItemEditor : Editor
             }
         }
         DrawPropertiesExcluding(serializedObject, scriptField);
+
+        serializedObject.ApplyModifiedProperties();
     }
 
     static List<T> FindAssetsByType<T>() where T : UnityEngine.Object

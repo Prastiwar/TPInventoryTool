@@ -19,25 +19,39 @@ public class Modifier
     public ModifierType ModifyType;
     public ModifierCommand ModifyCommand;
     public float Value;
+    bool isModified = false;
     float tempValue;
 
     public void Modify()
     {
-        tempValue = Value;
         switch (ModifyCommand)
         {
             case ModifierCommand.Increase:
-                Stat.Value = ModifyType == ModifierType.Flat ? Stat.Value += Value : Stat.Value += (Stat.Value /= Value);
+                if (!isModified) // Modify
+                {
+                    if (ModifyType == ModifierType.Percentage)
+                        tempValue = Mathf.CeilToInt(Stat.Value / Value);
+                    Stat.Value = ModifyType == ModifierType.Flat ? Stat.Value += Value : Stat.Value += tempValue;
+                }
+                else // Undo
+                {
+                    Stat.Value = ModifyType == ModifierType.Flat ? Stat.Value -= Value : Stat.Value -= tempValue;
+                }
                 break;
 
             case ModifierCommand.Decrease:
-                Stat.Value = ModifyType == ModifierType.Flat ? Stat.Value -= Value : Stat.Value /= Value;
+                if (!isModified) // Modify
+                {
+                    if (ModifyType == ModifierType.Percentage)
+                        tempValue = Mathf.CeilToInt(Stat.Value / Value);
+                    Stat.Value = ModifyType == ModifierType.Flat ? Stat.Value -= Value : Stat.Value -= tempValue;
+                }
+                else // Undo
+                {
+                    Stat.Value = ModifyType == ModifierType.Flat ? Stat.Value += Value : Stat.Value += tempValue;
+                }
                 break;
         }
-    }
-
-    public void Undo()
-    {
-        Value = tempValue;
+        isModified = !isModified;
     }
 }

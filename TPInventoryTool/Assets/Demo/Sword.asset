@@ -9,14 +9,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00104fb1c4618224b94ef5927f3814ff, type: 3}
-  m_Name: New Item
+  m_Name: Sword
   m_EditorClassIdentifier: 
   ID: 0
-  Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  Name: Itemek
+  Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  Name: Sword
   Value: 5
-  type: 0
-  Modifiers: 0000000002000000
+  Type: {fileID: 11400000, guid: d51c490622b16924f8efa2421dffac63, type: 2}
+  Modifiers:
+  - Stat: {fileID: 11400000, guid: ac14c6d3807261f4786be27af58817fb, type: 2}
+    ModifyType: 1
+    ModifyCommand: 1
+    Value: 10
   Sounds:
   - AudioClip: {fileID: 0}
     AudioType: 0

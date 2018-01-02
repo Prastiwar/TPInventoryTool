@@ -14,9 +14,11 @@ public class InventoryEditor : Editor
     private static readonly string[] scriptField = new string[] { "m_Script" };
     SerializedProperty slots;
     bool Toggle = false;
+    InventoryCreator inventoryCreator;
 
     void OnEnable()
     {
+        inventoryCreator = target as InventoryCreator;
         slots = serializedObject.FindProperty("slots");
     }
 
@@ -26,6 +28,11 @@ public class InventoryEditor : Editor
 
         EditorGUILayout.LabelField("This script allows you to manage your Inventory");
         DrawPropertiesExcluding(serializedObject, scriptField);
+
+        //if (GUILayout.Button("Refresh UI", GUILayout.Width(200)))
+        //{
+        //    inventoryCreator.RefreshUI();
+        //}
 
         if (GUILayout.Button("Check loaded slots", GUILayout.Width(200)))
         {

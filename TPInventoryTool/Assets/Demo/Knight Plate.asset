@@ -9,14 +9,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00104fb1c4618224b94ef5927f3814ff, type: 3}
-  m_Name: New Item 1
+  m_Name: Knight Plate
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 2
   Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   Name: Itemek
   Value: 5
-  type: 0
-  Modifiers: 0000000002000000
+  Type: {fileID: 11400000, guid: 60db82a60202ba147bf87b6f5a4fdcde, type: 2}
+  Modifiers:
+  - Stat: {fileID: 11400000, guid: ac14c6d3807261f4786be27af58817fb, type: 2}
+    ModifyType: 0
+    ModifyCommand: 0
+    Value: 5
   Sounds:
   - AudioClip: {fileID: 0}
     AudioType: 0

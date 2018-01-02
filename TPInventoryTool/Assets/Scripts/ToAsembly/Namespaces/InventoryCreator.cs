@@ -9,40 +9,49 @@ public class InventoryCreator : MonoBehaviour
 {
     [Header("Put there PARENT of all slot's PARENTS")]
     [SerializeField] Transform slotTransform;
-    [Header("Put there your custom items")]
-    [SerializeField] List<Item> items = new List<Item>();
+    [Header("Do you want to save/load inventory?")]
+    [SerializeField] bool isSaving;
 
+    [HideInInspector] public InventorySaveLoad inventorySaveLoad;
     [HideInInspector] public List<Slot> slots = new List<Slot>();
 
     void OnValidate()
     {
-        if (slotTransform != null && slots.Count < slotTransform.childCount)
+        if (inventorySaveLoad == null) GetComponent<InventorySaveLoad>();
+
+        if (slotTransform != null)
         {
-            foreach (Transform slot in slotTransform)
+            slots.Clear();
+            foreach (Transform trans in slotTransform)
             {
-                Transform child = slot;
-                foreach (Transform slott in child)
+                Transform child = trans;
+                foreach (Transform slot in child)
                 {
-                    slots.Add(slott.gameObject.AddComponent<Slot>());
+                    if (slot.GetComponent<Slot>())
+                        slots.Add(slot.GetComponent<Slot>());
+                    else
+                        slots.Add(slot.gameObject.AddComponent<Slot>());
                 }
             }
+            inventorySaveLoad.Slots = slots;
         }
-
-        RefreshUI();
     }
 
-    void RefreshUI()
+    void Awake()
     {
-        int _itemsLength = items.Count;
-        int _slotsLength = slots.Count;
-        int i;
-        for (i = 0; i < _itemsLength && i < _slotsLength; i++)
-        {
-            slots[i].Item = items[i];
-        }
-        for (; i < _slotsLength; i++)
-        {
-            slots[i].Item = null;
-        }
+        if (isSaving)
+            inventorySaveLoad.Load();
     }
+
+    public void OnApplicationPause(bool pause)
+    {
+        if(isSaving)
+            inventorySaveLoad.Save();
+    }
+    public void OnApplicationQuit()
+    {
+        if (isSaving)
+            inventorySaveLoad.Save();
+    }
+
 }
