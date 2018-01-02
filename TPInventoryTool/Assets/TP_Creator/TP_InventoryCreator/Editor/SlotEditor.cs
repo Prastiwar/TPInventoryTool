@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-using TP_Inventory_Slot;
+﻿using UnityEditor;
+using TP_Inventory;
 
-[CustomEditor(typeof(Slot))]
+[CustomEditor(typeof(TPSlot))]
 public class SlotEditor : ScriptlessEditor
 {
     public override void OnInspectorGUI()

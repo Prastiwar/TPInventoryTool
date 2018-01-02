@@ -1,60 +1,47 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using TP_Inventory_Item;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace TP_Inventory_Slot
+namespace TP_Inventory
 {
-    [RequireComponent(typeof(EventTrigger))]
     [RequireComponent(typeof(CanvasGroup))]
-    public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerEnterHandler
+    [RequireComponent(typeof(Image))]
+    public class TPSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerEnterHandler
     {
-        InventoryCreator inventoryCreator;
+        TPInventoryCreator inventoryCreator;
         Transform actualTransform;
         Vector2 basePosition;
         CanvasGroup canvasGroup;
         Image Image;
-        Item _item;
+        TPItem _item;
         UnityAction onPointerEnterAction;
 
         public Type Type;
         public bool isEquipSlot;
 
-        public Item Item
+        public TPItem Item
         {
             get { return _item; }
-            set { _item = value; RefreshItem(); }
+            set { _item = value; RefreshItemUI(); }
         }
 
         void OnValidate()
         {
             if (Image == null) Image = GetComponent<Image>();
-            if (inventoryCreator == null) inventoryCreator = FindObjectOfType<InventoryCreator>();
+            if (inventoryCreator == null) inventoryCreator = FindObjectOfType<TPInventoryCreator>();
             if (actualTransform == null) actualTransform = GetComponent<Transform>();
             if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
 
-            RefreshItem();
+            RefreshItemUI();
         }
 
-        void RefreshItem()
+        void RefreshItemUI()
         {
-            if (Image != null)
-            {
+            if (!Image.enabled)
                 Image.enabled = true;
-                if (_item != null)
-                {
-                    Image.sprite = _item.Sprite;
-                    Image.color = Color.white;
-                }
-                else
-                {
-                    Image.sprite = null;
-                    Image.color = Color.clear;
-                }
-            }
+            Image.sprite = Item != null ? Item.Sprite : null;
+            Image.color = Item != null ? Color.white : Color.clear;
         }
 
         public int Save()
@@ -70,34 +57,43 @@ namespace TP_Inventory_Slot
             if (saved == -1)
                 return;
 
-            int length = inventoryCreator.inventorySaveLoad.Items.Length;
+            int length = inventoryCreator.InventorySaveLoad.Items.Length;
             for (int i = 0; i < length; i++)
             {
-                if (inventoryCreator.inventorySaveLoad.Items[i].ID == saved)
-                    Item = inventoryCreator.inventorySaveLoad.Items[i];
+                if (inventoryCreator.InventorySaveLoad.Items[i].ID == saved)
+                    Item = inventoryCreator.InventorySaveLoad.Items[i];
             }
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            AutoEquip();
+            if (Item != null)
+            {
+                AutoEquip();
+            }
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            basePosition = actualTransform.position;
-            canvasGroup.blocksRaycasts = false;
+            if (Item != null)
+            {
+                basePosition = actualTransform.position;
+                canvasGroup.blocksRaycasts = false;
+            }
         }
         public void OnDrag(PointerEventData eventData)
         {
-            actualTransform.position = eventData.position;
+            if (Item != null)
+            {
+                actualTransform.position = eventData.position;
+            }
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (eventData.pointerEnter != null)
+            if (eventData.pointerEnter != null && Item != null)
             {
-                Slot slot = eventData.pointerEnter.GetComponent<Slot>();
+                TPSlot slot = eventData.pointerEnter.GetComponent<TPSlot>();
                 if (slot != null)
                 {
                     // Jeśli to na co patrzysz jest equipem, to sprawdz czy ma ten sam typ co trzymany item
@@ -130,7 +126,7 @@ namespace TP_Inventory_Slot
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (eventData != null)
+            if (eventData != null && Item != null)
             {
                 if (onPointerEnterAction != null)
                     OnPointerEnter();
@@ -147,7 +143,7 @@ namespace TP_Inventory_Slot
 
         void AutoEquip()
         {
-            var slots = inventoryCreator.slots;
+            var slots = inventoryCreator.Slots;
             int _length = slots.Count;
 
             for (int i = 0; i < _length; i++)
