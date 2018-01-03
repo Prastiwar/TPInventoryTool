@@ -2,7 +2,7 @@
 
 namespace TP_Inventory
 {
-    [CreateAssetMenu(menuName = "TP_InventoryTool/Item", fileName = "New Item")]
+    //[CreateAssetMenu(menuName = "TP_InventoryTool/Item", fileName = "New Item")]
     public class TPItem : ScriptableObject
     {
         [HideInInspector]

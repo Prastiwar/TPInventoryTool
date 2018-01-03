@@ -52,16 +52,16 @@ namespace TP_Inventory
                 return -1;
         }
 
-        public void Load(int saved)
+        public void Load(int _saved)
         {
-            if (saved == -1)
+            if (_saved == -1)
                 return;
 
-            int length = inventoryCreator.InventorySaveLoad.Items.Length;
+            int length = inventoryCreator.InventoryPersistance.inventoryData.Items.Count;
             for (int i = 0; i < length; i++)
             {
-                if (inventoryCreator.InventorySaveLoad.Items[i].ID == saved)
-                    Item = inventoryCreator.InventorySaveLoad.Items[i];
+                if (inventoryCreator.InventoryPersistance.inventoryData.Items[i].ID == _saved)
+                    Item = inventoryCreator.InventoryPersistance.inventoryData.Items[i];
             }
         }
 

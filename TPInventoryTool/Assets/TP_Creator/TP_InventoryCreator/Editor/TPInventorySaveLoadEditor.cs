@@ -4,25 +4,19 @@ using UnityEngine;
 using UnityEditor;
 using TP_Inventory;
 
-[CustomEditor(typeof(TPInventorySaveLoad))]
-public class TPInventorySaveLoadEditor : ScriptlessEditor
+[CustomEditor(typeof(TPInventoryPersistance))]
+public class TPInventoryPersistanceEditor : ScriptlessEditor
 {
-    TPInventorySaveLoad InventorySaveLoad;
+    TPInventoryPersistance InventorySaveLoad;
 
     void OnEnable()
     {
-        InventorySaveLoad = target as TPInventorySaveLoad;
+        InventorySaveLoad = target as TPInventoryPersistance;
 
         if (InventorySaveLoad.inventoryData == null)
         {
             InventorySaveLoad.inventoryData =
-                (TPInventoryData)AssetDatabase.LoadAssetAtPath("Assets/TP_Creator/TP_InventoryCreator/Demo/InventoryData.asset", typeof(TPInventoryData));
-        }
-        if (InventorySaveLoad.inventoryData != null)
-        {
-            InventorySaveLoad.Items = InventorySaveLoad.inventoryData.Items.ToArray();
-            InventorySaveLoad.Stats = InventorySaveLoad.inventoryData.Stats.ToArray();
-            InventorySaveLoad.Types = InventorySaveLoad.inventoryData.Types.ToArray();
+                (TPInventoryData)AssetDatabase.LoadAssetAtPath("Assets/TP_Creator/TP_InventoryCreator/InventoryData/InventoryData.asset", typeof(TPInventoryData));
         }
     }
 

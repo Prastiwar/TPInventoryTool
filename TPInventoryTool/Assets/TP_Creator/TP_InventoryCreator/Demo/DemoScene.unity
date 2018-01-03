@@ -3310,8 +3310,7 @@ MonoBehaviour:
   - {fileID: 1024328408}
   Items: []
   Stats: []
-  Types:
-  - {fileID: 0}
+  Types: []
   inventoryData: {fileID: 0}
 --- !u!1 &1395543842
 GameObject:

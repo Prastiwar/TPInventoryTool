@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using TP_Inventory;
+using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(TPStat))]

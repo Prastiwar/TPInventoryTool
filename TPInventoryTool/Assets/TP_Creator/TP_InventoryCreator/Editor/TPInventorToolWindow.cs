@@ -54,7 +54,7 @@ public class TPInventorToolWindow : EditorWindow
                 loaded = "Items Loaded";
                 noLoaded = "No Items Loaded!";
                 horizontalVar = "coś";
-                array = inventoryCreator.InventorySaveLoad.Items;
+                array = inventoryCreator.InventoryPersistance.inventoryData.Items.ToArray();
                 action = DrawItems;
                 type = typeof(TPItem);
                 break;
@@ -62,7 +62,7 @@ public class TPInventorToolWindow : EditorWindow
                 loaded = "Types Loaded";
                 noLoaded = "No Types Loaded!";
                 horizontalVar = "";
-                array = inventoryCreator.InventorySaveLoad.Types;
+                array = inventoryCreator.InventoryPersistance.inventoryData.Types.ToArray();
                 action = DrawTypes;
                 type = typeof(TPType);
                 break;
@@ -70,7 +70,7 @@ public class TPInventorToolWindow : EditorWindow
                 loaded = "Stats Loaded";
                 noLoaded = "No Stats Loaded!";
                 horizontalVar = "Value";
-                array = inventoryCreator.InventorySaveLoad.Stats;
+                array = inventoryCreator.InventoryPersistance.inventoryData.Stats.ToArray();
                 action = DrawStats;
                 type = typeof(TPStat);
                 break;
@@ -96,7 +96,7 @@ public class TPInventorToolWindow : EditorWindow
 
         if (array.Length == 0)
         {
-            EditorGUILayout.HelpBox(noLoaded, MessageType.Error);
+            EditorGUILayout.HelpBox(noLoaded + " Try to Refresh/Update Manager or create one!", MessageType.Error);
             return;
         }
         GUILayout.BeginHorizontal();
@@ -139,7 +139,7 @@ public class TPInventorToolWindow : EditorWindow
     
     void CreateScriptable()
     {
-        string dataPath = "Assets/TP_Creator/TP_InventoryCreator/InventoryData/";
+        string assetPath = TPInventoryDesigner.DataPath;
 
         UnityEngine.Object newObj = null;
 
@@ -147,15 +147,15 @@ public class TPInventorToolWindow : EditorWindow
         {
             case ToolEnum.Items:
                 newObj = ScriptableObject.CreateInstance<TPItem>();
-                dataPath += "Items/New Item.asset";
+                assetPath += "Items/New Item" + inventoryCreator.InventoryPersistance.inventoryData.Items.Count + ".asset";
                 break;
             case ToolEnum.Types:
                 newObj = ScriptableObject.CreateInstance<TPType>();
-                dataPath += "Types/New Type.asset";
+                assetPath += "Types/New Type" + inventoryCreator.InventoryPersistance.inventoryData.Types.Count + ".asset";
                 break;
             case ToolEnum.Stats:
                 newObj = ScriptableObject.CreateInstance<TPStat>();
-                dataPath += "Stats/New Stat.asset";
+                assetPath += "Stats/New Stat" + inventoryCreator.InventoryPersistance.inventoryData.Stats.Count + ".asset";
                 break;
             case ToolEnum.Slots:
                 break;
@@ -163,8 +163,12 @@ public class TPInventorToolWindow : EditorWindow
                 break;
         }
 
-        AssetDatabase.CreateAsset(newObj, dataPath);
+        AssetDatabase.CreateAsset(newObj, assetPath);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
+
+        Debug.Log(newObj + " created in " + assetPath);
+        TPInventoryDesigner.UpdateManager();
+        SetToolWindow();
     }
 }

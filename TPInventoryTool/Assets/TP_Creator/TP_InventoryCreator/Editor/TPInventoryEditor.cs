@@ -60,7 +60,7 @@ public class TPInventoryEditor : ScriptlessEditor
         base.OnInspectorGUI();
         if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(30)))
         {
-            //TPInventoryDesigner.OpenWindow();
+            TPInventoryDesigner.OpenWindow();
         }
         serializedObject.ApplyModifiedProperties();
     }

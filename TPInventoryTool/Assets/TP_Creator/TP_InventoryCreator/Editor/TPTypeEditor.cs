@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using TP_Inventory;
 
 [CustomEditor(typeof(TPType))]
 public class TPTypeEditor : ScriptlessEditor

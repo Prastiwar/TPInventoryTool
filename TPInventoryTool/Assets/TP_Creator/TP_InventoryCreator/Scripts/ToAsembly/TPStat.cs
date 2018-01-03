@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "TP_InventoryTool/Stat", fileName = "New Stat")]
-public class TPStat : ScriptableObject
+namespace TP_Inventory
 {
-    [Header("Statistic Property")]
-    public float Value;
-
-    public float Save()
+    //[CreateAssetMenu(menuName = "TP_InventoryTool/Stat", fileName = "New Stat")]
+    public class TPStat : ScriptableObject
     {
-        return Value;
-    }
+        [Header("Statistic Property")]
+        public float Value;
 
-    public void Load(float saved)
-    {
-        Value = saved;
+        public float Save()
+        {
+            return Value;
+        }
+
+        public void Load(float saved)
+        {
+            Value = saved;
+        }
     }
 }

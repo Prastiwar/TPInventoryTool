@@ -6,18 +6,19 @@ using UnityEngine;
 namespace TP_Inventory
 {
     [RequireComponent(typeof(TPInventoryCreator))]
-    public class TPInventorySaveLoad : MonoBehaviour
+    public class TPInventoryPersistance : MonoBehaviour
     {
-        [HideInInspector] public List<TPSlot> Slots = new List<TPSlot>();
-        
-        public TPItem[] Items;
-        public TPStat[] Stats;
-        public TPType[] Types;
         public TPInventoryData inventoryData;
 
+        TPInventoryCreator TPInventoryCreator;
         string saveName = "inventory";
         string extenstionName = "TP_Save";
-        
+
+        void OnValidate()
+        {
+            if (TPInventoryCreator == null) TPInventoryCreator = GetComponent<TPInventoryCreator>();
+        }
+
         public void Save()
         {
             string path = Application.persistentDataPath + "/" + saveName + "." + extenstionName;
@@ -26,17 +27,17 @@ namespace TP_Inventory
             FileStream file = File.Create(path);
 
             // Index of 0 to statLength (- 1)
-            int statLength = Stats.Length;
+            int statLength = inventoryData.Stats.Count;
             for (int i = 0; i < statLength; i++)
             {
-                objects.Add(Stats[i].Save());
+                objects.Add(inventoryData.Stats[i].Save());
             }
 
             // Index of statLength
-            int slotsLength = Slots.Count;
+            int slotsLength = TPInventoryCreator.Slots.Count;
             for (int i = 0; i < slotsLength; i++)
             {
-                objects.Add(Slots[i].Save());
+                objects.Add(TPInventoryCreator.Slots[i].Save());
             }
 
             bf.Serialize(file, objects);
@@ -55,17 +56,17 @@ namespace TP_Inventory
             List<System.Object> objects = serializedObject as List<System.Object>;
 
             // Index of 0 to statLength(- 1)
-            int statLength = Stats.Length;
+            int statLength = inventoryData.Stats.Count;
             for (int i = 0; i < statLength; i++)
             {
-                Stats[i].Load((float)objects[i]);
+                inventoryData.Stats[i].Load((float)objects[i]);
             }
 
             // Index of statLength to slotLength
-            int slotsLength = Slots.Count;
+            int slotsLength = TPInventoryCreator.Slots.Count;
             for (int i = 0; i < slotsLength; i++)
             {
-                Slots[i].Load((int)objects[statLength + i]);
+                TPInventoryCreator.Slots[i].Load((int)objects[statLength + i]);
             }
 
 

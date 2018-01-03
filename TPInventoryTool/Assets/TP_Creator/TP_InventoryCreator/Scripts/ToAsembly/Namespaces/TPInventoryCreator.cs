@@ -9,13 +9,13 @@ namespace TP_Inventory
         [Header("Put there PARENT of all slot's PARENTS")]
         [HideInInspector] public Transform slotTransform = null;
 
-        [HideInInspector] public bool isSaving = false;
-        [HideInInspector] public TPInventorySaveLoad InventorySaveLoad;
+        bool isSaving = false;
+        [HideInInspector] public TPInventoryPersistance InventoryPersistance;
         [HideInInspector] public List<TPSlot> Slots = new List<TPSlot>();
 
         void OnValidate()
         {
-            if (InventorySaveLoad == null) InventorySaveLoad = GetComponent<TPInventorySaveLoad>();
+            if (InventoryPersistance == null) InventoryPersistance = GetComponent<TPInventoryPersistance>();
 
             if (slotTransform != null)
             {
@@ -31,25 +31,24 @@ namespace TP_Inventory
                             Slots.Add(slot.gameObject.AddComponent<TPSlot>());
                     }
                 }
-                InventorySaveLoad.Slots = Slots;
             }
         }
 
         void Awake()
         {
             if (isSaving)
-                InventorySaveLoad.Load();
+                InventoryPersistance.Load();
         }
 
         public void OnApplicationPause(bool pause)
         {
             if (isSaving)
-                InventorySaveLoad.Save();
+                InventoryPersistance.Save();
         }
         public void OnApplicationQuit()
         {
             if (isSaving)
-                InventorySaveLoad.Save();
+                InventoryPersistance.Save();
         }
 
     }

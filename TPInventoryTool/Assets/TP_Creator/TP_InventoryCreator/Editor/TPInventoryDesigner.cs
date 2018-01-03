@@ -8,7 +8,8 @@ using System;
 
 public class TPInventoryDesigner : EditorWindow
 {
-    TPInventoryCreator inventoryCreator;
+    static TPInventoryCreator inventoryCreator;
+    public static string DataPath = "Assets/TP_Creator/TP_InventoryCreator/InventoryData/";
     GUISkin skin;
 
     Texture2D headerTexture;
@@ -45,22 +46,27 @@ public class TPInventoryDesigner : EditorWindow
         toolTexture.SetPixel(0, 0, Color.white);
         toolTexture.Apply();
 
+        InitCreator();
+    }
+
+    static void InitCreator()
+    {
         if (inventoryCreator == null)
         {
             inventoryCreator = FindObjectOfType<TPInventoryCreator>();
-            string path = "Assets/TP_Creator/TP_InventoryCreator/InventoryData/InventoyData.asset";
 
-            var data = AssetDatabase.LoadAssetAtPath(path, typeof(TPInventoryData));
-            if (data == null)
-            {
-                TPInventoryData newData = ScriptableObject.CreateInstance<TPInventoryData>();
-                AssetDatabase.CreateAsset(newData, path);
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-            }
-
-            if(inventoryCreator != null)
+            if (inventoryCreator != null)
                 UpdateManager();
+        }
+
+        var data = AssetDatabase.LoadAssetAtPath(DataPath, typeof(TPInventoryData));
+        if (data == null)
+        {
+            TPInventoryData newData = ScriptableObject.CreateInstance<TPInventoryData>();
+            AssetDatabase.CreateAsset(newData, DataPath + "InventoryData.asset");
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            inventoryCreator.InventoryPersistance.inventoryData = newData;
         }
     }
 
@@ -104,7 +110,7 @@ public class TPInventoryDesigner : EditorWindow
         {
             if (GUILayout.Button("Initialize Inventory Manager"))
             {
-                GameObject go = (new GameObject("TP_InventoryManager", typeof(TPInventoryCreator), typeof(TPInventorySaveLoad)));
+                GameObject go = (new GameObject("TP_InventoryManager", typeof(TPInventoryCreator), typeof(TPInventoryPersistance)));
                 inventoryCreator = go.GetComponent<TPInventoryCreator>();
                 UpdateManager();
                 Debug.Log("Inventory Manager created and updated");
@@ -131,11 +137,13 @@ public class TPInventoryDesigner : EditorWindow
         GUILayout.EndArea();
     }
 
-    void UpdateManager()
+    public static void UpdateManager()
     {
-        EditorUtility.SetDirty(inventoryCreator.InventorySaveLoad);
-        EditorUtility.SetDirty(inventoryCreator.slotTransform);
+        InitCreator();
         EditorUtility.SetDirty(inventoryCreator);
+        EditorUtility.SetDirty(inventoryCreator.InventoryPersistance);
+        EditorUtility.SetDirty(inventoryCreator.slotTransform);
+        EditorUtility.SetDirty(inventoryCreator.InventoryPersistance.inventoryData);
         Debug.Log("Inventory Manager updated");
     }
 
