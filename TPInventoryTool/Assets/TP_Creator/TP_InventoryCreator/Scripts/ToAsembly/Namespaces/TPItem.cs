@@ -12,9 +12,9 @@ namespace TP_Inventory
         public string Name;
         public string Description;
         public float Worth;
-        public Type Type;
-        public Modifier[] Modifiers;
-        public Sound[] Sounds;
+        public TPType Type;
+        public TPModifier[] Modifiers;
+        public TPSound[] Sounds;
     }
 
 }

@@ -8,7 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b6f58a02db7a914f83161f46ad7fa0f, type: 3}
-  m_Name: Armor
+  m_Script: {fileID: 11500000, guid: 978033c2baf9794459e9021e30c61ee6, type: 3}
+  m_Name: InventoryData
   m_EditorClassIdentifier: 
-  Name: Armor
+  Items: []
+  Stats: []
+  Types: []

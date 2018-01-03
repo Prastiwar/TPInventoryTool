@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "TP_InventoryTool/Stat", fileName = "New Stat")]
-public class Stat : ScriptableObject
+public class TPStat : ScriptableObject
 {
     [Header("Statistic Property")]
     public float Value;

@@ -2,11 +2,15 @@
 using TP_Inventory;
 
 [CustomEditor(typeof(TPSlot))]
-public class SlotEditor : ScriptlessEditor
+public class TPSlotEditor : ScriptlessEditor
 {
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
+
         //EditorGUILayout.LabelField("Statistic");
         base.OnInspectorGUI();
+
+        serializedObject.ApplyModifiedProperties();
     }
 }

@@ -8,15 +8,16 @@ namespace TP_Inventory
     [RequireComponent(typeof(TPInventoryCreator))]
     public class TPInventorySaveLoad : MonoBehaviour
     {
-        [Header("Put there everything you want to save/load")]
-        public TPItem[] Items;
-        public Stat[] Stats;
-
         [HideInInspector] public List<TPSlot> Slots = new List<TPSlot>();
+        
+        public TPItem[] Items;
+        public TPStat[] Stats;
+        public TPType[] Types;
+        public TPInventoryData inventoryData;
 
         string saveName = "inventory";
         string extenstionName = "TP_Save";
-
+        
         public void Save()
         {
             string path = Application.persistentDataPath + "/" + saveName + "." + extenstionName;

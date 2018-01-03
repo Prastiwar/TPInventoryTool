@@ -1,0 +1,16 @@
+﻿using UnityEditor;
+using UnityEngine;
+
+[CustomEditor(typeof(TPStat))]
+public class TPStatEditor : ScriptlessEditor
+{
+    public override void OnInspectorGUI()
+    {
+        serializedObject.Update();
+
+        EditorGUILayout.LabelField("Statistic");
+        base.OnInspectorGUI();
+
+        serializedObject.ApplyModifiedProperties();
+    }
+}

@@ -3,7 +3,7 @@ using TP_Inventory;
 using UnityEditor;
 
 [CustomEditor(typeof(TPItem))]
-public class ItemEditor : ScriptlessEditor
+public class TPItemEditor : ScriptlessEditor
 {
     //private static readonly string[] scriptField = new string[] { "m_Script"};
 
@@ -31,7 +31,7 @@ public class ItemEditor : ScriptlessEditor
             {
                 if(item.ID == Items[i].ID)
                 {
-                    EditorGUILayout.HelpBox("ID is actually used, should be unique!", MessageType.Error);
+                    EditorGUILayout.HelpBox("ID is actually used, must be unique!", MessageType.Error);
                     break;
                 }
             }

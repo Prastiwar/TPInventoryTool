@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEditor;
 using TP_Inventory;
+using System;
 
 public class TPInventoryDesigner : EditorWindow
 {
+    TPInventoryCreator inventoryCreator;
     GUISkin skin;
 
     Texture2D headerTexture;
@@ -16,7 +19,7 @@ public class TPInventoryDesigner : EditorWindow
     Rect managerSection;
     Rect toolSection;
 
-    TPInventoryCreator inventoryCreator;
+    bool toggleCustom;
 
     [MenuItem("TP_Creator/TP_InventoryCreator")]
     public static void OpenWindow()
@@ -41,6 +44,24 @@ public class TPInventoryDesigner : EditorWindow
         toolTexture = new Texture2D(1, 1);
         toolTexture.SetPixel(0, 0, Color.white);
         toolTexture.Apply();
+
+        if (inventoryCreator == null)
+        {
+            inventoryCreator = FindObjectOfType<TPInventoryCreator>();
+            string path = "Assets/TP_Creator/TP_InventoryCreator/InventoryData/InventoyData.asset";
+
+            var data = AssetDatabase.LoadAssetAtPath(path, typeof(TPInventoryData));
+            if (data == null)
+            {
+                TPInventoryData newData = ScriptableObject.CreateInstance<TPInventoryData>();
+                AssetDatabase.CreateAsset(newData, path);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+
+            if(inventoryCreator != null)
+                UpdateManager();
+        }
     }
 
     void OnGUI()
@@ -66,6 +87,11 @@ public class TPInventoryDesigner : EditorWindow
     {
         GUILayout.BeginArea(headerSection);
         GUILayout.Label("TP Inventory Creator - Manage your Inventory!");
+        if (GUILayout.Button("Generate empty inventory hierarchy"))
+        {
+            // load prefab from resources
+            Debug.Log("Inventory Created");
+        }
         GUILayout.EndArea();
     }
 
@@ -74,40 +100,65 @@ public class TPInventoryDesigner : EditorWindow
         GUILayout.BeginArea(managerSection);
         GUILayout.Label("Inventory Manager - Core");
 
-        if (inventoryCreator == null && !(inventoryCreator = FindObjectOfType<TPInventoryCreator>()))
+        if (inventoryCreator == null)
         {
             if (GUILayout.Button("Initialize Inventory Manager"))
             {
                 GameObject go = (new GameObject("TP_InventoryManager", typeof(TPInventoryCreator), typeof(TPInventorySaveLoad)));
                 inventoryCreator = go.GetComponent<TPInventoryCreator>();
+                UpdateManager();
                 Debug.Log("Inventory Manager created and updated");
             }
         }
         else
         {
-            EditorGUILayout.LabelField("Put there parent of all slot's parent");
-            inventoryCreator.slotTransform = (EditorGUILayout.ObjectField(inventoryCreator.slotTransform.gameObject, typeof(GameObject), true) as GameObject).transform;
-            if (GUILayout.Button("Check Loaded Slots"))
+            if (GUILayout.Button("Custom Inventory"))
+                toggleCustom = !toggleCustom;
+
+            if (toggleCustom)
             {
-                EditorGUILayout.TextArea("Slots Loaded: ");
-                foreach (var item in inventoryCreator.Slots)
-                {
-                    EditorGUILayout.ObjectField(item, typeof(TPSlot), true);
-                }
+                EditorGUILayout.LabelField("Put there parent of all slot's parent");
+                inventoryCreator.slotTransform =
+                    (EditorGUILayout.ObjectField(inventoryCreator.slotTransform.gameObject, typeof(GameObject), true) as GameObject).transform;
             }
 
             if (GUILayout.Button("Update Manager", skin.GetStyle("Header")))
             {
-                Debug.Log("Inventory Manager updated");
+                UpdateManager();
             }
         }
 
         GUILayout.EndArea();
     }
 
+    void UpdateManager()
+    {
+        EditorUtility.SetDirty(inventoryCreator.InventorySaveLoad);
+        EditorUtility.SetDirty(inventoryCreator.slotTransform);
+        EditorUtility.SetDirty(inventoryCreator);
+        Debug.Log("Inventory Manager updated");
+    }
+
     void DrawTools()
     {
-
+        GUILayout.BeginArea(toolSection);
+        if (GUILayout.Button("Items"))
+        {
+            TPInventorToolWindow.OpenToolWindow(TPInventorToolWindow.ToolEnum.Items);
+        }
+        if (GUILayout.Button("Types"))
+        {
+            TPInventorToolWindow.OpenToolWindow(TPInventorToolWindow.ToolEnum.Types);
+        }
+        if (GUILayout.Button("Stats"))
+        {
+            TPInventorToolWindow.OpenToolWindow(TPInventorToolWindow.ToolEnum.Stats);
+        }
+        if (GUILayout.Button("Slots"))
+        {
+            TPInventorToolWindow.OpenToolWindow(TPInventorToolWindow.ToolEnum.Slots);
+        }
+        GUILayout.EndArea();
     }
 
 }

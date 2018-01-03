@@ -7,11 +7,7 @@ public class ScriptlessEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        serializedObject.Update();
-        
         DrawPropertiesExcluding(serializedObject, scriptField);
-
-        serializedObject.ApplyModifiedProperties();
     }
 
     public List<T> FindAssetsByType<T>() where T : UnityEngine.Object

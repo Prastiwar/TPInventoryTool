@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Modifier
+public class TPModifier
 {
     public enum ModifierType
     {
@@ -15,7 +15,7 @@ public class Modifier
         Increase,
         Decrease
     }
-    public Stat Stat;
+    public TPStat Stat;
     public ModifierType ModifyType;
     public ModifierCommand ModifyCommand;
     public float Value;

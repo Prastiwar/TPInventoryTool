@@ -17,7 +17,7 @@ namespace TP_Inventory
         TPItem _item;
         UnityAction onPointerEnterAction;
 
-        public Type Type;
+        public TPType Type;
         public bool isEquipSlot;
 
         public TPItem Item

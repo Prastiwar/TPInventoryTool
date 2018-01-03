@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(TPInventoryCreator))]
-public class InventoryEditor : ScriptlessEditor
+public class TPInventoryEditor : ScriptlessEditor
 {
     //[MenuItem("TP_Inventory/Create Inventory Manager")]
     //static void InventoryCreator()
@@ -60,7 +60,7 @@ public class InventoryEditor : ScriptlessEditor
         base.OnInspectorGUI();
         if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(30)))
         {
-            TPInventoryDesigner.OpenWindow();
+            //TPInventoryDesigner.OpenWindow();
         }
         serializedObject.ApplyModifiedProperties();
     }
