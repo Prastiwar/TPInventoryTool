@@ -14,8 +14,8 @@ namespace TP_Inventory
         Vector2 basePosition;
         CanvasGroup canvasGroup;
         Image Image;
-        TPItem _item;
         UnityAction onPointerEnterAction;
+        [SerializeField] TPItem _item;
 
         public TPType Type;
         public bool isEquipSlot;

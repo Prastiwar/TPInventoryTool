@@ -11,6 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 978033c2baf9794459e9021e30c61ee6, type: 3}
   m_Name: InventoryData
   m_EditorClassIdentifier: 
-  Items: []
-  Stats: []
-  Types: []
+  Items:
+  - {fileID: 11400000, guid: 554bac5ace0f7d64d846155b602a520b, type: 2}
+  Stats:
+  - {fileID: 11400000, guid: 6408616f20d13254fb61fe1ef47d8c1a, type: 2}
+  Types:
+  - {fileID: 11400000, guid: 9f6f321324d523c47afa9b275655c6fb, type: 2}
+  isSaving: 0

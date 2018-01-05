@@ -7,7 +7,6 @@ namespace TP_Inventory
     //[CreateAssetMenu(menuName = "TP_InventoryTool/Stat", fileName = "New Stat")]
     public class TPStat : ScriptableObject
     {
-        [Header("Statistic Property")]
         public float Value;
 
         public float Save()

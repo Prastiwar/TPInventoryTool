@@ -11,6 +11,7 @@ public class DemoScript : MonoBehaviour
 
     void Awake()
     {
-        manager.Slots[0].Item = item;
+        manager = FindObjectOfType<TPInventoryCreator>();
+        slot.Item = item;
     }
 }

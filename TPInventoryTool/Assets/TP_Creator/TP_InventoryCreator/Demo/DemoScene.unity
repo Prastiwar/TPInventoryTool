@@ -145,7 +145,7 @@ RectTransform:
   - {fileID: 298656766}
   - {fileID: 1024328405}
   m_Father: {fileID: 718422686}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -290,7 +290,7 @@ RectTransform:
   - {fileID: 679456460}
   - {fileID: 189357743}
   m_Father: {fileID: 718422686}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -472,6 +472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &108178048
@@ -634,6 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &189357748
@@ -796,6 +798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &222489563
@@ -958,6 +961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 1
 --- !u!225 &298656771
@@ -1052,6 +1056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &308145798
@@ -1146,6 +1151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &315871230
@@ -1324,7 +1330,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manager: {fileID: 1391681667}
   slot: {fileID: 1056124675}
-  item: {fileID: 0}
+  item: {fileID: 11400000, guid: 554bac5ace0f7d64d846155b602a520b, type: 2}
+  col: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 0}
 --- !u!4 &453256320
 Transform:
   m_ObjectHideFlags: 0
@@ -1419,6 +1426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &470929173
@@ -1994,6 +2002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &679456465
@@ -2034,8 +2043,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 57530194}
   - {fileID: 1770535}
+  - {fileID: 57530194}
   m_Father: {fileID: 495885250}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2158,6 +2167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 1
 --- !u!225 &916633491
@@ -2618,6 +2628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 1
 --- !u!225 &1024328410
@@ -2848,6 +2859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &1056124677
@@ -2942,6 +2954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &1161987600
@@ -3104,6 +3117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &1276116931
@@ -3198,6 +3212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &1295153239
@@ -3240,9 +3255,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotTransform: {fileID: 718422686}
-  isSaving: 0
-  InventorySaveLoad: {fileID: 1391681669}
+  InventoryPersistance: {fileID: 1391681669}
   Slots:
+  - {fileID: 916633489}
+  - {fileID: 1462183133}
+  - {fileID: 298656769}
+  - {fileID: 1024328408}
   - {fileID: 1056124675}
   - {fileID: 1471430245}
   - {fileID: 1295153237}
@@ -3259,10 +3277,6 @@ MonoBehaviour:
   - {fileID: 308145796}
   - {fileID: 679456463}
   - {fileID: 189357746}
-  - {fileID: 916633489}
-  - {fileID: 1462183133}
-  - {fileID: 298656769}
-  - {fileID: 1024328408}
 --- !u!4 &1391681668
 Transform:
   m_ObjectHideFlags: 0
@@ -3287,30 +3301,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5601d8f4c2fad947a6a922412c1420f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Slots:
-  - {fileID: 1056124675}
-  - {fileID: 1471430245}
-  - {fileID: 1295153237}
-  - {fileID: 470929171}
-  - {fileID: 1276116929}
-  - {fileID: 222489561}
-  - {fileID: 1161987598}
-  - {fileID: 1450235848}
-  - {fileID: 2005320013}
-  - {fileID: 2066120158}
-  - {fileID: 108178046}
-  - {fileID: 1395543846}
-  - {fileID: 315871228}
-  - {fileID: 308145796}
-  - {fileID: 679456463}
-  - {fileID: 189357746}
-  - {fileID: 916633489}
-  - {fileID: 1462183133}
-  - {fileID: 298656769}
-  - {fileID: 1024328408}
-  Items: []
-  Stats: []
-  Types: []
   inventoryData: {fileID: 0}
 --- !u!1 &1395543842
 GameObject:
@@ -3393,6 +3383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &1395543848
@@ -3555,6 +3546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &1450235850
@@ -3649,6 +3641,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 1
 --- !u!225 &1462183135
@@ -3743,6 +3736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &1471430247
@@ -4629,6 +4623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &2005320015
@@ -4791,6 +4786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de6efdfca6ab449b55524d47651cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 0}
   Type: {fileID: 0}
   isEquipSlot: 0
 --- !u!225 &2066120160

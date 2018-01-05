@@ -8,8 +8,9 @@ public class TPSlotEditor : ScriptlessEditor
     {
         serializedObject.Update();
 
-        //EditorGUILayout.LabelField("Statistic");
-        base.OnInspectorGUI();
+        EditorGUILayout.LabelField("Inventory Slot");
+
+        DrawPropertiesExcluding(serializedObject, scriptField);
 
         serializedObject.ApplyModifiedProperties();
     }

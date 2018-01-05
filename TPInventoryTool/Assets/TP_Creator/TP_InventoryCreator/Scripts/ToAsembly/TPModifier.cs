@@ -26,6 +26,11 @@ namespace TP_Inventory
 
         public void Modify()
         {
+            if (Stat == null)
+            {
+                Debug.LogError("You don't have Modifier reference in this item!");
+                return;
+            }
             switch (ModifyCommand)
             {
                 case ModifierCommand.Increase:

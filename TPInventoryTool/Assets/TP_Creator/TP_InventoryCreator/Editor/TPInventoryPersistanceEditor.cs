@@ -1,21 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 using TP_Inventory;
 
 [CustomEditor(typeof(TPInventoryPersistance))]
 public class TPInventoryPersistanceEditor : ScriptlessEditor
 {
-    TPInventoryPersistance InventorySaveLoad;
+    TPInventoryPersistance InventoryPersistance;
 
     void OnEnable()
     {
-        InventorySaveLoad = target as TPInventoryPersistance;
+        InventoryPersistance = target as TPInventoryPersistance;
 
-        if (InventorySaveLoad.inventoryData == null)
+        if (InventoryPersistance.inventoryData == null)
         {
-            InventorySaveLoad.inventoryData =
+            InventoryPersistance.inventoryData =
                 (TPInventoryData)AssetDatabase.LoadAssetAtPath("Assets/TP_Creator/TP_InventoryCreator/InventoryData/InventoryData.asset", typeof(TPInventoryData));
         }
     }
@@ -24,9 +21,7 @@ public class TPInventoryPersistanceEditor : ScriptlessEditor
     {
         serializedObject.Update();
 
-        EditorGUILayout.LabelField("Script for Save/Load");
-    
-        base.OnInspectorGUI();
+        EditorGUILayout.LabelField("Script for Inventory Data");
 
         serializedObject.ApplyModifiedProperties();
     }

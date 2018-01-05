@@ -13,5 +13,10 @@ public class TPStatEditor : ScriptlessEditor
         base.OnInspectorGUI();
 
         serializedObject.ApplyModifiedProperties();
+
+        if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(20)))
+        {
+            TPInventoryDesigner.OpenWindow();
+        }
     }
 }

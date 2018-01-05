@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using TP_Inventory;
 using UnityEditor;
+using UnityEngine;
 
 [CustomEditor(typeof(TPItem))]
 public class TPItemEditor : ScriptlessEditor
 {
-    //private static readonly string[] scriptField = new string[] { "m_Script"};
-
     List<TPItem> Items = new List<TPItem>();
     int length;
     TPItem item;
@@ -39,6 +38,11 @@ public class TPItemEditor : ScriptlessEditor
         DrawPropertiesExcluding(serializedObject, scriptField);
 
         serializedObject.ApplyModifiedProperties();
+
+        if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(20)))
+        {
+            TPInventoryDesigner.OpenWindow();
+        }
     }
 
 }

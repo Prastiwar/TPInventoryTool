@@ -1,22 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
 using TP_Inventory;
+using UnityEngine;
 
 [CustomEditor(typeof(TPInventoryData))]
-public class TPInventoryDataEditor : Editor
+public class TPInventoryDataEditor : ScriptlessEditor
 {
-    TPInventoryData InventoryData;
-
-    void OnEnable()
+    public override void OnInspectorGUI()
     {
-        InventoryData = target as TPInventoryData;
+        serializedObject.Update();
 
-        //InventoryData.Items = TPHelper.FindAssetsByType<TPItem>();
-        //InventoryData.Stats = TPHelper.FindAssetsByType<TPStat>();
-        //InventoryData.Types = TPHelper.FindAssetsByType<TPType>();
-        
+        EditorGUILayout.LabelField("Inventory Data");
+        base.OnInspectorGUI();
+
+        serializedObject.ApplyModifiedProperties();
+
+        if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(20)))
+        {
+            TPInventoryDesigner.OpenWindow();
+        }
     }
-
 }

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00104fb1c4618224b94ef5927f3814ff, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: 
+  ID: 0
+  Sprite: {fileID: 21300088, guid: 8b031c73650ded749842730886d33101, type: 3}
+  Name: Sword
+  Description: Short Sword
+  Worth: 2
+  Type: {fileID: 11400000, guid: 9f6f321324d523c47afa9b275655c6fb, type: 2}
+  Modifiers:
+  - Stat: {fileID: 11400000, guid: 6408616f20d13254fb61fe1ef47d8c1a, type: 2}
+    ModifyType: 0
+    ModifyCommand: 0
+    Value: 5
+  Sounds: []
