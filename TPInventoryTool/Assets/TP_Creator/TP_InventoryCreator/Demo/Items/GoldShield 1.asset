@@ -9,18 +9,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00104fb1c4618224b94ef5927f3814ff, type: 3}
-  m_Name: GoldShield
+  m_Name: GoldShield 1
   m_EditorClassIdentifier: 
-  ID: 2
-  Sprite: {fileID: 21300082, guid: 8b031c73650ded749842730886d33101, type: 3}
-  Name: Golden Shield
-  Description: King's shield
+  ID: 4
+  Sprite: {fileID: 21300008, guid: 8b031c73650ded749842730886d33101, type: 3}
+  Name: Golden Shield2
+  Description: King's shield2
   Worth: 2
   Type: {fileID: 11400000, guid: 3e1736e3b5299a94698fe284713fd479, type: 2}
   Modifiers:
   - Stat: {fileID: 11400000, guid: 6408616f20d13254fb61fe1ef47d8c1a, type: 2}
     ModifyType: 0
-    ModifyCommand: 1
+    ModifyCommand: 0
     Value: 50
   Sounds:
   - AudioClip: {fileID: 8300000, guid: c50b9c81fc526824f900a8a82c45d0c7, type: 3}

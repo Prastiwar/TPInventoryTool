@@ -1,5 +1,4 @@
 ﻿using UnityEditor;
-using TP_Inventory;
 using UnityEngine;
 
 namespace TP_InventoryEditor
@@ -12,6 +11,7 @@ namespace TP_InventoryEditor
             serializedObject.Update();
 
             EditorGUILayout.LabelField("Inventory Data");
+
             base.OnInspectorGUI();
 
             serializedObject.ApplyModifiedProperties();

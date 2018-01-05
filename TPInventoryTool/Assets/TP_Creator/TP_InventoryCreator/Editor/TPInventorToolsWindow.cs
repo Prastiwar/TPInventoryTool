@@ -26,18 +26,29 @@ namespace TP_InventoryEditor
         static Type type;
 
         Vector2 scrollPos = Vector2.zero;
+        Texture2D mainTexture;
 
         public static void OpenToolWindow(ToolEnum _tool)
         {
             window = (TPInventoryToolsWindow)GetWindow(typeof(TPInventoryToolsWindow));
-            window.minSize = new Vector2(300, 400);
+            window.minSize = new Vector2(400, 400);
+            window.maxSize = new Vector2(400, 400);
             window.Show();
             tool = _tool;
             SetToolWindow();
         }
 
+        void OnEnable()
+        {
+            Color color = new Color(0.19f, 0.19f, 0.19f);
+            mainTexture = new Texture2D(1, 1);
+            mainTexture.SetPixel(0, 0, color);
+            mainTexture.Apply();
+        }
+
         void OnGUI()
         {
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), mainTexture);
             scrollPos = GUILayout.BeginScrollView(scrollPos, false, false, GUILayout.Width(window.position.width), GUILayout.Height(window.position.height));
             DrawTool();
             GUILayout.EndScrollView();
@@ -100,36 +111,63 @@ namespace TP_InventoryEditor
             }
             GUILayout.BeginHorizontal();
             EditorGUILayout.LabelField(loaded, GUILayout.MinWidth(150));
-            EditorGUILayout.LabelField(horizontalVar);
+            EditorGUILayout.LabelField(horizontalVar, GUILayout.Width(150));
             GUILayout.EndHorizontal();
 
             foreach (UnityEngine.Object element in array)
             {
                 _object = element;
                 GUILayout.BeginHorizontal();
-                EditorGUILayout.ObjectField(element, type, false);
+                EditorGUILayout.ObjectField(element, type, false, GUILayout.Width(200));
                 action();
                 GUILayout.EndHorizontal();
-                EditorUtility.SetDirty(_object as UnityEngine.Object);
+                EditorUtility.SetDirty((_object as UnityEngine.Object) == null ? this : (_object as UnityEngine.Object));
             }
         }
 
         static void DrawSlots()
         {
-            (_object as TPSlot).isEquipSlot = EditorGUILayout.Toggle((_object as TPSlot).isEquipSlot);
+            (_object as TPSlot).isEquipSlot = EditorGUILayout.Toggle((_object as TPSlot).isEquipSlot, GUILayout.Width(30));
+            EditAsset(_object as UnityEngine.Object);
         }
 
         static void DrawStats()
         {
             (_object as TPStat).Value = EditorGUILayout.FloatField((_object as TPStat).Value);
+            DeleteAsset(_object as UnityEngine.Object);
+            EditAsset(_object as UnityEngine.Object);
         }
 
         static void DrawTypes()
         {
+            DeleteAsset(_object as UnityEngine.Object);
+            EditAsset(_object as UnityEngine.Object);
         }
 
         static void DrawItems()
         {
+            DeleteAsset(_object as UnityEngine.Object);
+            EditAsset(_object as UnityEngine.Object);
+        }
+
+        static void DeleteAsset(UnityEngine.Object obj)
+        {
+            if (GUILayout.Button("Del", GUILayout.Width(30)))
+            {
+                string assetPath = AssetDatabase.GetAssetPath(obj);
+                AssetDatabase.MoveAssetToTrash(assetPath);
+
+                SetToolWindow();
+                TPInventoryDesigner.UpdateManager();
+            }
+        }
+
+        static void EditAsset(UnityEngine.Object obj)
+        {
+            if (GUILayout.Button("Edit", GUILayout.Width(35)))
+            {
+                AssetDatabase.OpenAsset(obj);
+            }
         }
 
         void CreateScriptable()
@@ -153,9 +191,9 @@ namespace TP_InventoryEditor
                     assetPath += "Stats/New Stat" + TPInventoryDesigner.inventoryCreator.InventoryPersistance.inventoryData.Stats.Count + ".asset";
                     break;
                 case ToolEnum.Slots:
-                    break;
+                    return;
                 default:
-                    break;
+                    return;
             }
 
             if (AssetDatabase.IsValidFolder("Assets/" + TPInventoryDesigner.editorData.InventoryAssetsPath))

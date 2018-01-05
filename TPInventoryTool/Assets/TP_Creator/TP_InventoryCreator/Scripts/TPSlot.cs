@@ -67,31 +67,35 @@ namespace TP_Inventory
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (Item != null)
-            {
-                AutoEquip();
-            }
+            if (Item == null)
+                return;
+
+            AutoEquip();
         }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (Item != null)
-            {
-                basePosition = actualTransform.position;
-                canvasGroup.blocksRaycasts = false;
-            }
+            if (Item == null)
+                return;
+
+            basePosition = actualTransform.position;
+            canvasGroup.blocksRaycasts = false;
         }
+
         public void OnDrag(PointerEventData eventData)
         {
-            if (Item != null)
-            {
-                actualTransform.position = eventData.position;
-            }
+            if (Item == null)
+                return;
+
+            actualTransform.position = eventData.position;
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (eventData.pointerEnter != null && Item != null)
+            if (Item == null)
+                return;
+
+            if (eventData.pointerEnter != null)
             {
                 TPSlot slot = eventData.pointerEnter.GetComponent<TPSlot>();
                 if (slot != null)
@@ -100,19 +104,39 @@ namespace TP_Inventory
                     // Jeśli to na co patrzysz nie jest equipem to sprawdź, czy ma ten sam typ lub nie ma typu co trzymany item
                     if (slot.isEquipSlot ? Item.Type == slot.Type : (Item.Type == slot.Type || slot.Type == null))
                     {
-                        if (slot.Item != null)
+                        if (slot.Item != null) // if on looking slot there is actually Item - replace them
                         {
                             // Sprawdź, czy trzymany item jest Equip slotem
                             // Jeśli tak, to sprawdź czy item na patrzonym slocie jest tego typu co trzymany item.
-                            if (isEquipSlot ? slot.Item.Type == Item.Type : true)
+                            // Replacing functionality
+                            if (isEquipSlot ? slot.Item.Type == Item.Type/* || slot.Item == null*/ : true)
                             {
+                                if (isEquipSlot)
+                                {
+                                    ModifyStats();
+                                    slot.ModifyStats();
+                                    PlaySound(TPSound.AudioTypeEnum.RemoveItem);
+                                }
+                                else if (slot.isEquipSlot)
+                                {
+                                    ModifyStats();
+                                    slot.ModifyStats();
+                                    PlaySound(TPSound.AudioTypeEnum.WearItem);
+                                }
+                                else
+                                    PlaySound(TPSound.AudioTypeEnum.MoveItem);
+
                                 var tempItem = slot.Item;
                                 slot.Item = Item;
                                 Item = tempItem;
                             }
                         }
-                        else
+                        else // If slot is free
                         {
+                            if (slot.isEquipSlot || isEquipSlot)
+                                ModifyStats();
+                            PlaySound(slot.isEquipSlot ? TPSound.AudioTypeEnum.WearItem :
+                                (isEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.MoveItem));
                             slot.Item = Item;
                             Item = null;
                         }
@@ -126,7 +150,10 @@ namespace TP_Inventory
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (eventData != null && Item != null)
+            if (Item == null)
+                return;
+
+            if (eventData != null)
             {
                 if (onPointerEnterAction != null)
                     OnPointerEnter();
@@ -151,25 +178,71 @@ namespace TP_Inventory
                 // If you click on equip slot, it will find no-equip slot
                 if (isEquipSlot ? !slots[i].isEquipSlot : slots[i].isEquipSlot)
                 {
-                    //If you click on equip slot, it will find matching Type (or null)
-                    if (isEquipSlot ? ((slots[i].Type == Item.Type || slots[i].Type == null) && slots[i].Item == null) : (slots[i].Type == Item.Type))
+                    // old code
+                    //if (isEquipSlot ?
+                    //    ((slots[i].Type == Item.Type || slots[i].Type == null) && slots[i].Item == null)
+                    //    :
+                    //    ((slots[i].Type == Item.Type && slots[i].Item == null)))
+                    //{
+                    //    ModifyStats();
+                    //    PlaySound(isEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
+                    //    slots[i].Item = Item;
+                    //    Item = null;
+                    //    break;
+                    //}
+                    if ((slots[i].Type == Item.Type || slots[i].Type == null) && slots[i].Item == null)
                     {
-                        int _Modlength = Item.Modifiers.Length;
-                        for (int j = 0; j < _Modlength; j++)
-                        {
-                            if(isEquipSlot)
-                                Item.Modifiers[j].UnModify();
-                            else
-                                Item.Modifiers[j].Modify();
-                            StartCoroutine(Item.Modifiers[j].StatValueChanged());
-                        }
+                        ModifyStats();
+                        PlaySound(isEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
                         slots[i].Item = Item;
                         Item = null;
+                        break;
+                    }
+                    else if (!isEquipSlot && slots[i].Type == Item.Type)
+                    {
+                        ModifyStats();
+                        slots[i].ModifyStats();
+                        PlaySound(isEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
+                        var tempItem = slots[i].Item;
+                        slots[i].Item = Item;
+                        Item = tempItem;
                         break;
                     }
                 }
             }
         }
 
+        public void ModifyStats()
+        {
+            int _Modlength = Item.Modifiers.Length;
+            for (int i = 0; i < _Modlength; i++)
+            {
+                if (isEquipSlot)
+                    Item.Modifiers[i].UnModify();
+                else
+                    Item.Modifiers[i].Modify();
+                StartCoroutine(Item.Modifiers[i].StatValueChanged());
+            }
+        }
+
+        void PlaySound(TPSound.AudioTypeEnum audioType)
+        {
+            AudioSource source = FindObjectOfType<AudioSource>();
+            if(source == null)
+            {
+                Debug.LogError("There is no Audio Source in scene");
+                return;
+            }
+
+            int length = Item.Sounds.Length;
+            for (int i = 0; i < length; i++)
+            {
+                if (Item.Sounds[i].AudioType == audioType)
+                {
+                    source.PlayOneShot(Item.Sounds[i].AudioClip);
+                    return;
+                }
+            }
+        }
     }
 }

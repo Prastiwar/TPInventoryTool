@@ -22,4 +22,10 @@ MonoBehaviour:
     ModifyType: 0
     ModifyCommand: 0
     Value: 5
-  Sounds: []
+  Sounds:
+  - AudioClip: {fileID: 8300000, guid: c50b9c81fc526824f900a8a82c45d0c7, type: 3}
+    AudioType: 1
+  - AudioClip: {fileID: 8300000, guid: c50b9c81fc526824f900a8a82c45d0c7, type: 3}
+    AudioType: 2
+  - AudioClip: {fileID: 8300000, guid: c50b9c81fc526824f900a8a82c45d0c7, type: 3}
+    AudioType: 3
