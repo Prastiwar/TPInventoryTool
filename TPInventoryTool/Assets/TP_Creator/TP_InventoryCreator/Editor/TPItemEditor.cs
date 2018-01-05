@@ -3,46 +3,53 @@ using TP_Inventory;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(TPItem))]
-public class TPItemEditor : ScriptlessEditor
+namespace TP_InventoryEditor
 {
-    List<TPItem> Items = new List<TPItem>();
-    int length;
-    TPItem item;
-
-    void OnEnable()
+    [CustomEditor(typeof(TPItem))]
+    public class TPItemEditor : ScriptlessEditor
     {
-        Items = FindAssetsByType<TPItem>();
-        length = Items.Count;
-        item = (TPItem)target;
-    }
+        List<TPItem> Items = new List<TPItem>();
+        int length;
+        TPItem item;
 
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
-
-        EditorGUILayout.LabelField("Custom Item");
-        item.ID = EditorGUILayout.IntField("Unique ID", item.ID);
-
-        for (int i = 0; i < length; i++)
+        void OnEnable()
         {
-            if (Items[i].name != item.name)
+            Items = TPHelper.FindAssetsByType<TPItem>();
+            length = Items.Count;
+            item = (TPItem)target;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+
+            EditorGUILayout.LabelField("Custom Item");
+            item.ID = EditorGUILayout.IntField("Unique ID", item.ID);
+
+            for (int i = 0; i < length; i++)
             {
-                if(item.ID == Items[i].ID)
+                if (Items[i].name != item.name)
                 {
-                    EditorGUILayout.HelpBox("ID is actually used, must be unique!", MessageType.Error);
-                    break;
+                    if (item.ID == Items[i].ID)
+                    {
+                        EditorGUILayout.HelpBox("ID is actually used, must be unique!", MessageType.Error);
+                        break;
+                    }
                 }
             }
-        }
-        DrawPropertiesExcluding(serializedObject, scriptField);
 
-        serializedObject.ApplyModifiedProperties();
+            if (GUI.changed)
+                EditorUtility.SetDirty(item);
 
-        if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(20)))
-        {
-            TPInventoryDesigner.OpenWindow();
+            DrawPropertiesExcluding(serializedObject, scriptField);
+
+            serializedObject.ApplyModifiedProperties();
+
+            if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(20)))
+            {
+                TPInventoryDesigner.OpenWindow();
+            }
         }
+
     }
-
 }

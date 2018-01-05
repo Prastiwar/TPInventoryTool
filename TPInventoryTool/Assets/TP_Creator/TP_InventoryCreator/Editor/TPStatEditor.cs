@@ -2,21 +2,24 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(TPStat))]
-public class TPStatEditor : ScriptlessEditor
+namespace TP_InventoryEditor
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(TPStat))]
+    public class TPStatEditor : ScriptlessEditor
     {
-        serializedObject.Update();
-
-        EditorGUILayout.LabelField("Statistic");
-        base.OnInspectorGUI();
-
-        serializedObject.ApplyModifiedProperties();
-
-        if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(20)))
+        public override void OnInspectorGUI()
         {
-            TPInventoryDesigner.OpenWindow();
+            serializedObject.Update();
+
+            EditorGUILayout.LabelField("Statistic");
+            base.OnInspectorGUI();
+
+            serializedObject.ApplyModifiedProperties();
+
+            if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(20)))
+            {
+                TPInventoryDesigner.OpenWindow();
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace TP_Inventory
+namespace TP_InventoryEditor
 {
     public class TPHelper
     {

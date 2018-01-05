@@ -1,28 +1,31 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 
-public class ScriptlessEditor : Editor
+namespace TP_InventoryEditor
 {
-    public readonly string[] scriptField = new string[] { "m_Script" };
-
-    public override void OnInspectorGUI()
+    public class ScriptlessEditor : Editor
     {
-        DrawPropertiesExcluding(serializedObject, scriptField);
-    }
+        public readonly string[] scriptField = new string[] { "m_Script" };
 
-    public List<T> FindAssetsByType<T>() where T : UnityEngine.Object
-    {
-        List<T> assets = new List<T>();
-        string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(T)));
-        for (int i = 0; i < guids.Length; i++)
+        public override void OnInspectorGUI()
         {
-            string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
-            T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
-            if (asset != null)
-            {
-                assets.Add(asset);
-            }
+            DrawPropertiesExcluding(serializedObject, scriptField);
         }
-        return assets;
+
+        //public List<T> FindAssetsByType<T>() where T : UnityEngine.Object
+        //{
+        //    List<T> assets = new List<T>();
+        //    string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(T)));
+        //    for (int i = 0; i < guids.Length; i++)
+        //    {
+        //        string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
+        //        T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+        //        if (asset != null)
+        //        {
+        //            assets.Add(asset);
+        //        }
+        //    }
+        //    return assets;
+        //}
     }
 }

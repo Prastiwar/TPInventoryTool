@@ -1,28 +1,31 @@
 ﻿using UnityEditor;
 using TP_Inventory;
 
-[CustomEditor(typeof(TPInventoryPersistance))]
-public class TPInventoryPersistanceEditor : ScriptlessEditor
+namespace TP_InventoryEditor
 {
-    TPInventoryPersistance InventoryPersistance;
-
-    void OnEnable()
+    [CustomEditor(typeof(TPInventoryPersistance))]
+    public class TPInventoryPersistanceEditor : ScriptlessEditor
     {
-        InventoryPersistance = target as TPInventoryPersistance;
+        TPInventoryPersistance InventoryPersistance;
 
-        if (InventoryPersistance.inventoryData == null)
+        void OnEnable()
         {
-            InventoryPersistance.inventoryData =
-                (TPInventoryData)AssetDatabase.LoadAssetAtPath("Assets/TP_Creator/TP_InventoryCreator/InventoryData/InventoryData.asset", typeof(TPInventoryData));
+            InventoryPersistance = target as TPInventoryPersistance;
+
+            if (InventoryPersistance.inventoryData == null)
+            {
+                InventoryPersistance.inventoryData =
+                    (TPInventoryData)AssetDatabase.LoadAssetAtPath("Assets/TP_Creator/TP_InventoryCreator/InventoryData/InventoryData.asset", typeof(TPInventoryData));
+            }
         }
-    }
 
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
 
-        EditorGUILayout.LabelField("Script for Inventory Data");
+            EditorGUILayout.LabelField("Script for Inventory Data");
 
-        serializedObject.ApplyModifiedProperties();
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 }

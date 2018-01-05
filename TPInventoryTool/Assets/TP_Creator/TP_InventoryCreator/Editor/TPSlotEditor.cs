@@ -1,17 +1,20 @@
 ﻿using UnityEditor;
 using TP_Inventory;
 
-[CustomEditor(typeof(TPSlot))]
-public class TPSlotEditor : ScriptlessEditor
+namespace TP_InventoryEditor
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(TPSlot))]
+    public class TPSlotEditor : ScriptlessEditor
     {
-        serializedObject.Update();
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
 
-        EditorGUILayout.LabelField("Inventory Slot");
+            EditorGUILayout.LabelField("Inventory Slot");
 
-        DrawPropertiesExcluding(serializedObject, scriptField);
+            DrawPropertiesExcluding(serializedObject, scriptField);
 
-        serializedObject.ApplyModifiedProperties();
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 }
