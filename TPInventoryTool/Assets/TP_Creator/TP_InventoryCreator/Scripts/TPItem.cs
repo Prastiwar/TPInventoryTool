@@ -4,8 +4,8 @@ namespace TP_Inventory
 {
     public class TPItem : ScriptableObject
     {
-        [HideInInspector]
-        public int ID;
+        [SerializeField] int _ID;
+        public int ID { get { return _ID; } }
 
         public Sprite Sprite;
         public string Name;
@@ -14,6 +14,9 @@ namespace TP_Inventory
         public TPType Type;
         public TPModifier[] Modifiers;
         public TPSound[] Sounds;
+        public TPSlot OnSlot { get { return slot; } set { slot = value; } }
+
+        TPSlot slot;
     }
 
 }

@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00104fb1c4618224b94ef5927f3814ff, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: 
-  ID: 0
+  _ID: 4
   Sprite: {fileID: 21300088, guid: 8b031c73650ded749842730886d33101, type: 3}
   Name: Sword
   Description: Short Sword

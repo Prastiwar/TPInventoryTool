@@ -14,7 +14,7 @@ namespace TP_Inventory
         Vector2 basePosition;
         CanvasGroup canvasGroup;
         Image Image;
-        UnityAction onPointerEnterAction;
+        //UnityAction onPointerEnterAction;
         [SerializeField] TPItem _item;
 
         public TPType Type;
@@ -48,34 +48,38 @@ namespace TP_Inventory
 
         void RefreshItemUI()
         {
-            if (!Image.enabled)
-                Image.enabled = true;
-            Image.sprite = Item != null ? Item.Sprite : null;
-            Image.color = Item != null ? Color.white : Color.clear;
-        }
-
-        public int Save()
-        {
-            if (Item != null)
-                return Item.ID;
-            else
-                return -1;
-        }
-
-        public void Load(int _saved)
-        {
-            if (_saved == -1)
-                return;
-
-            int length = inventoryCreator.Data.Items.Count;
-            for (int i = 0; i < length; i++)
+            if (Image != null)
             {
-                if (inventoryCreator.Data.Items[i].ID == _saved)
-                    Item = inventoryCreator.Data.Items[i];
+                if (!Image.enabled)
+                    Image.enabled = true;
+                Image.sprite = Item != null ? Item.Sprite : null;
+                Image.color = Item != null ? Color.white : Color.clear;
             }
+            if(Item != null) Item.OnSlot = this;
         }
 
-        public void OnPointerClick(PointerEventData eventData)
+        //public int Save()
+        //{
+        //    if (Item != null)
+        //        return Item.ID;
+        //    else
+        //        return -1;
+        //}
+
+        //public void Load(int _saved)
+        //{
+        //    if (_saved == -1)
+        //        return;
+
+        //    int length = inventoryCreator.Data.Items.Count;
+        //    for (int i = 0; i < length; i++)
+        //    {
+        //        if (inventoryCreator.Data.Items[i].ID == _saved)
+        //            Item = inventoryCreator.Data.Items[i];
+        //    }
+        //}
+
+        public virtual void OnPointerClick(PointerEventData eventData)
         {
             if (Item == null)
                 return;
@@ -83,7 +87,7 @@ namespace TP_Inventory
             AutoEquip();
         }
 
-        public void OnBeginDrag(PointerEventData eventData)
+        public virtual void OnBeginDrag(PointerEventData eventData)
         {
             if (Item == null)
                 return;
@@ -92,7 +96,7 @@ namespace TP_Inventory
             canvasGroup.blocksRaycasts = false;
         }
 
-        public void OnDrag(PointerEventData eventData)
+        public virtual void OnDrag(PointerEventData eventData)
         {
             if (Item == null)
                 return;
@@ -100,7 +104,7 @@ namespace TP_Inventory
             actualTransform.position = eventData.position;
         }
 
-        public void OnEndDrag(PointerEventData eventData)
+        public virtual void OnEndDrag(PointerEventData eventData)
         {
             if (Item == null)
                 return;
@@ -158,25 +162,25 @@ namespace TP_Inventory
             basePosition = Vector2.zero;
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
+        public virtual void OnPointerEnter(PointerEventData eventData)
         {
             if (Item == null)
                 return;
 
-            if (eventData != null)
-            {
-                if (onPointerEnterAction != null)
-                    OnPointerEnter();
-            }
+            //if (eventData != null)
+            //{
+            //    if (onPointerEnterAction != null)
+            //        OnPointerEnter();
+            //}
         }
-        void OnPointerEnter()
-        {
-            onPointerEnterAction();
-        }
-        public void SetPointerEnter(UnityAction _action)
-        {
-            onPointerEnterAction = _action;
-        }
+        //void OnPointerEnter()
+        //{
+        //    onPointerEnterAction();
+        //}
+        //public void SetPointerEnter(UnityAction _action)
+        //{
+        //    onPointerEnterAction = _action;
+        //}
 
         void AutoEquip()
         {
@@ -222,7 +226,7 @@ namespace TP_Inventory
             }
         }
 
-        public void ModifyStats()
+        void ModifyStats()
         {
             int _Modlength = Item.Modifiers.Length;
             for (int i = 0; i < _Modlength; i++)

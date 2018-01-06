@@ -53,5 +53,21 @@ namespace TP_Inventory
             }
         }
 
+        public bool IsFull()
+        {
+            return FreeSlotsLength() != 0 ? false : true;
+        }
+
+        public int FreeSlotsLength()
+        {
+            int freeSlots = 0;
+            int length = Slots.Count;
+            for (int i = 0; i < length; i++)
+            {
+                if (Slots[i].Item == null)
+                    freeSlots++;
+            }
+            return freeSlots;
+        }
     }
 }

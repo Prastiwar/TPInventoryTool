@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00104fb1c4618224b94ef5927f3814ff, type: 3}
   m_Name: KingsChestplate
   m_EditorClassIdentifier: 
-  ID: 3
+  _ID: 2
   Sprite: {fileID: 21300092, guid: 8b031c73650ded749842730886d33101, type: 3}
   Name: Golden Chestplate
   Description: King's chestplate

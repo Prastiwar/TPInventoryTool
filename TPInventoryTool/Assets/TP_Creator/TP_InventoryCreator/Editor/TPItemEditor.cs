@@ -17,14 +17,15 @@ namespace TP_InventoryEditor
             item = (TPItem)target;
             Items = TPHelper.FindAssetsByType<TPItem>();
             length = Items.Count;
+            testxd = serializedObject.FindProperty("_ID");
         }
-
+        SerializedProperty testxd;
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
             EditorGUILayout.LabelField("Custom Item");
-            item.ID = EditorGUILayout.IntField("Unique ID", item.ID);
+            EditorGUILayout.PropertyField(testxd);
 
             for (int i = 0; i < length; i++)
             {
@@ -41,7 +42,7 @@ namespace TP_InventoryEditor
             if (GUI.changed)
                 EditorUtility.SetDirty(item);
 
-            DrawPropertiesExcluding(serializedObject, scriptField);
+            DrawPropertiesExcluding(serializedObject, new string[] { "_ID", "m_Script"});
 
             serializedObject.ApplyModifiedProperties();
 
