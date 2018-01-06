@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class DemoScript : MonoBehaviour
 {
+    [SerializeField] TPInventoryCreator manager;
     [SerializeField] TPSlot[] slots;
     [SerializeField] TPItem[] items;
     [SerializeField] Text[] texts;

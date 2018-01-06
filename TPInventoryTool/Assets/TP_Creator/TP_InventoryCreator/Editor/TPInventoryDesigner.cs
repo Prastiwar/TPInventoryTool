@@ -6,8 +6,8 @@ namespace TP_InventoryEditor
 {
     public class TPInventoryDesigner : EditorWindow
     {
-        public static TPInventoryGUIData editorData;
-        public static TPInventoryCreator inventoryCreator;
+        public static TPInventoryGUIData EditorData;
+        public static TPInventoryCreator InventoryCreator;
         GUISkin skin;
 
         Texture2D headerTexture;
@@ -19,8 +19,10 @@ namespace TP_InventoryEditor
         Rect toolSection;
 
         bool toggleParent;
-        bool togglePersistance;
         bool existManager;
+
+        SerializedObject creator;
+        SerializedProperty slotsParents;
 
         [MenuItem("TP_Creator/TP_InventoryCreator")]
         public static void OpenWindow()
@@ -38,19 +40,32 @@ namespace TP_InventoryEditor
 
         void OnEnable()
         {
-            //if (!TPInventoryToolsWindow.window)
-            //    inventoryCreator = null;
+            InitEditorData();
 
-            editorData = AssetDatabase.LoadAssetAtPath(
-                "Assets/TP_Creator/TP_InventoryCreator/EditorResources/EditorGUIData.asset",
-                typeof(TPInventoryGUIData)) as TPInventoryGUIData;
-            if (editorData == null)
+            InitTextures();
+
+            InitCreator();
+
+            creator = new SerializedObject(InventoryCreator);
+            slotsParents = creator.FindProperty("SlotParentsTransform");
+        }
+
+        void InitEditorData()
+        {
+            EditorData = AssetDatabase.LoadAssetAtPath(
+                   "Assets/TP_Creator/TP_InventoryCreator/EditorResources/EditorGUIData.asset",
+                   typeof(TPInventoryGUIData)) as TPInventoryGUIData;
+
+            if (EditorData == null)
             {
-                Debug.Log("Editor data didn't found! Check path: 'Assets/TP_Creator/TP_InventoryCreator/EditorResources/EditorGUIData.asset'");
+                Debug.Log("Editor Data didn't found! Check path: 'Assets/TP_Creator/TP_InventoryCreator/EditorResources/EditorGUIData.asset'");
                 return;
             }
-            skin = editorData.GUISkin;
+            skin = EditorData.GUISkin;
+        }
 
+        void InitTextures()
+        {
             Color colorHeader = new Color(0.19f, 0.19f, 0.19f);
             Color color = new Color(0.15f, 0.15f, 0.15f);
 
@@ -65,23 +80,19 @@ namespace TP_InventoryEditor
             toolTexture = new Texture2D(1, 1);
             toolTexture.SetPixel(0, 0, color);
             toolTexture.Apply();
-
-            togglePersistance = EditorPrefs.GetBool("Persistance", false);
-
-            InitCreator();
         }
 
         static void InitCreator()
         {
-            if (inventoryCreator == null)
+            if (InventoryCreator == null)
             {
-                inventoryCreator = FindObjectOfType<TPInventoryCreator>();
+                InventoryCreator = FindObjectOfType<TPInventoryCreator>();
 
-                if (inventoryCreator != null)
+                if (InventoryCreator != null)
                     UpdateManager();
             }
 
-            var data = AssetDatabase.LoadAssetAtPath("Assets/" + editorData.InventoryDataPath + "InventoryData" + ".asset",
+            var data = AssetDatabase.LoadAssetAtPath("Assets/" + EditorData.InventoryDataPath + "InventoryData" + ".asset",
                 typeof(TPInventoryData));
 
             if (data == null)
@@ -92,25 +103,28 @@ namespace TP_InventoryEditor
 
         static void CreateInventoryData()
         {
-            TPInventoryData newData = ScriptableObject.CreateInstance<TPInventoryData>();
-            string path = "Assets/" + editorData.InventoryDataPath + "InventoryData" + ".asset";
-
+            string path = "Assets/" + EditorData.InventoryDataPath + "InventoryData" + ".asset";
             if (AssetDatabase.IsValidFolder(path))
+            {
                 Debug.Log("This path doesn't exist, create one!");
+                return;
+            }
 
-            newData.isSaving = EditorPrefs.GetBool("Persistance", false);
+            TPInventoryData newData = ScriptableObject.CreateInstance<TPInventoryData>();
             AssetDatabase.CreateAsset(newData, path);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            if (inventoryCreator)
-                inventoryCreator.InventoryPersistance.inventoryData = newData;
+            if (InventoryCreator)
+                InventoryCreator.Data = newData;
 
             Debug.Log("Created InventoryData file");
         }
 
         void OnGUI()
         {
+            creator.Update();
+
             if (EditorApplication.isPlaying)
             {
                 if (TPInventoryToolsWindow.window)
@@ -121,6 +135,8 @@ namespace TP_InventoryEditor
             DrawHeader();
             DrawManager();
             DrawTools();
+
+            creator.ApplyModifiedProperties();
         }
 
         void DrawLayouts()
@@ -146,7 +162,7 @@ namespace TP_InventoryEditor
             GUILayout.BeginArea(managerSection);
             GUILayout.Label("Inventory Manager - Core", skin.box);
 
-            if (inventoryCreator == null)
+            if (InventoryCreator == null)
             {
                 InitializeManager();
             }
@@ -154,7 +170,6 @@ namespace TP_InventoryEditor
             {
                 ChangeParent();
                 SpawnEmpty();
-                TogglePersistance();
                 ResetManager();
 
                 if (GUILayout.Button("Refresh and update", skin.button, GUILayout.Height(60)))
@@ -171,28 +186,30 @@ namespace TP_InventoryEditor
             if (GUILayout.Button("Initialize New Manager", skin.button, GUILayout.Height(50)))
             {
                 GameObject go = (new GameObject("TP_InventoryManager", typeof(TPInventoryCreator)));
-                inventoryCreator = go.GetComponent<TPInventoryCreator>();
+                InventoryCreator = go.GetComponent<TPInventoryCreator>();
                 UpdateManager();
                 Debug.Log("Inventory Manager created!");
             }
 
             if (GUILayout.Button("Initialize Exist Manager", skin.button, GUILayout.Height(50)))
-            {
                 existManager = !existManager;
-            }
+
             if (existManager)
-            {
-                inventoryCreator = EditorGUILayout.ObjectField(inventoryCreator, typeof(TPInventoryCreator), true,
+                InventoryCreator = EditorGUILayout.ObjectField(InventoryCreator, typeof(TPInventoryCreator), true,
                     GUILayout.Height(30)) as TPInventoryCreator;
-            }
         }
 
         void SpawnEmpty()
         {
             if (GUILayout.Button("Spawn empty inventory hierarchy", skin.button, GUILayout.Height(40)))
             {
-                Instantiate(editorData.InventoryPrefab);
-                Debug.Log("Inventory Created");
+                if (EditorData.InventoryPrefab == null)
+                {
+                    Debug.LogError("There is no inventory prefab in EditorGUIData file!");
+                    return;
+                }
+                Instantiate(EditorData.InventoryPrefab);
+                Debug.Log("Inventory Hierarchy Created");
             }
         }
 
@@ -204,44 +221,30 @@ namespace TP_InventoryEditor
             if (toggleParent)
             {
                 EditorGUILayout.LabelField("Put there parent of all slot's parent", skin.GetStyle("TipLabel"));
-                inventoryCreator.slotParentsTransform =
-                    EditorGUILayout.ObjectField(inventoryCreator.slotParentsTransform, typeof(Transform), true) as Transform;
-                inventoryCreator.RefreshSlots();
+                EditorGUILayout.PropertyField(slotsParents, GUIContent.none, GUILayout.Height(15));
+                //InventoryCreator.SlotParentsTransform =
+                //EditorGUILayout.ObjectField(InventoryCreator.SlotParentsTransform, typeof(Transform), true) as Transform;
+
                 if (GUI.changed)
+                {
+                    InventoryCreator.RefreshSlots();
                     UpdateManager();
+                }
                 EditorGUILayout.Space();
             }
         }
 
-        void TogglePersistance()
-        {
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Toggle Save/Load System", skin.button))
-            {
-                togglePersistance = !togglePersistance;
-                inventoryCreator.InventoryPersistance.inventoryData.isSaving = togglePersistance;
-                EditorPrefs.SetBool("Persistance", togglePersistance);
-                UpdateManager();
-                Debug.Log(togglePersistance ? "Save/Load enabled" : "Save/Load disabled");
-            }
-            EditorGUILayout.EndHorizontal();
-        }
-
         void ResetManager()
         {
-            if (GUILayout.Button("Reset Manager", skin.button))
-            {
-                inventoryCreator = null;
-            }
+            if (GUILayout.Button("Reset Manager", skin.button, GUILayout.Height(35)))
+                InventoryCreator = null;
         }
 
         public static void UpdateManager()
         {
             InitCreator();
-            inventoryCreator.RefreshSlots();
-            EditorUtility.SetDirty(inventoryCreator);
-            //EditorUtility.SetDirty(inventoryCreator.InventoryPersistance);
-            //EditorUtility.SetDirty(inventoryCreator.InventoryPersistance.inventoryData);
+            InventoryCreator.RefreshSlots();
+            EditorUtility.SetDirty(InventoryCreator);
 
             if (TPInventoryToolsWindow.window)
                 TPInventoryToolsWindow.SetToolWindow();

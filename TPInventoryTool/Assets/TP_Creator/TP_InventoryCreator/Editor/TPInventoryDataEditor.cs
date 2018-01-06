@@ -12,7 +12,7 @@ namespace TP_InventoryEditor
 
             EditorGUILayout.LabelField("Inventory Data");
 
-            base.OnInspectorGUI();
+            DrawPropertiesExcluding(serializedObject, scriptField);
 
             serializedObject.ApplyModifiedProperties();
 

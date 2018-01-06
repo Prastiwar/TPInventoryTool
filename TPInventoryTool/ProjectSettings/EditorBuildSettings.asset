@@ -4,4 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/TP_Creator/TP_InventoryCreator/Demo/ExampleScene.unity
+    guid: 03ab0c1a827957049beda022e9eb273f

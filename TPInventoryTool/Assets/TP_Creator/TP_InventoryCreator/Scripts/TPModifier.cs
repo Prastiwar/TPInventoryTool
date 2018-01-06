@@ -21,6 +21,7 @@ namespace TP_Inventory
         public ModifierCommand ModifyCommand;
         public float Value;
         float tempValue;
+        WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
 
         string NullStat = "You don't have Modifier reference in this item!";
 
@@ -72,7 +73,7 @@ namespace TP_Inventory
         public IEnumerator StatValueChanged()
         {
             Stat.HasChanged = true;
-            yield return new WaitForEndOfFrame();
+            yield return waitForEndOfFrame;
             Stat.HasChanged = false;
         }
     }

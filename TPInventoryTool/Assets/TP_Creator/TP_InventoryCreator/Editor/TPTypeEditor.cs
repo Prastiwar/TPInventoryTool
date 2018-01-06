@@ -9,12 +9,7 @@ namespace TP_InventoryEditor
     {
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
-
             EditorGUILayout.LabelField("Inventory Type");
-            base.OnInspectorGUI();
-
-            serializedObject.ApplyModifiedProperties();
 
             if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(20)))
             {

@@ -16,7 +16,6 @@ namespace TP_InventoryEditor
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            //base.OnInspectorGUI();
 
             EditorGUILayout.LabelField("GUI Skin");
             TPInventoryEditorData.GUISkin =
@@ -43,8 +42,6 @@ namespace TP_InventoryEditor
 
             if (GUI.changed)
                 EditorUtility.SetDirty(TPInventoryEditorData);
-
-            DrawPropertiesExcluding(serializedObject, scriptField);
 
             serializedObject.ApplyModifiedProperties();
         }

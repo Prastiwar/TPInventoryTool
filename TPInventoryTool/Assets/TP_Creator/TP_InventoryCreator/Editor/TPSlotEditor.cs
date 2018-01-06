@@ -13,7 +13,7 @@ namespace TP_InventoryEditor
             EditorGUILayout.LabelField("Inventory Slot");
 
             DrawPropertiesExcluding(serializedObject, scriptField);
-
+            
             serializedObject.ApplyModifiedProperties();
         }
     }

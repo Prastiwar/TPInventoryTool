@@ -9,18 +9,18 @@ namespace TP_InventoryEditor
         public List<TPItem> Items;
         public List<TPStat> Stats;
         public List<TPType> Types;
-        public bool isSaving;
 
+#if UNITY_EDITOR
         void OnEnable()
         {
             Refresh();
         }
-
         public void Refresh()
         {
             Items = TPHelper.FindAssetsByType<TPItem>();
             Stats = TPHelper.FindAssetsByType<TPStat>();
             Types = TPHelper.FindAssetsByType<TPType>();
         }
+#endif
     }
 }

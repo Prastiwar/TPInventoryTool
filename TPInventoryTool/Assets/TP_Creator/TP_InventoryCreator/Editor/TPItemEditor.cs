@@ -14,9 +14,9 @@ namespace TP_InventoryEditor
 
         void OnEnable()
         {
+            item = (TPItem)target;
             Items = TPHelper.FindAssetsByType<TPItem>();
             length = Items.Count;
-            item = (TPItem)target;
         }
 
         public override void OnInspectorGUI()

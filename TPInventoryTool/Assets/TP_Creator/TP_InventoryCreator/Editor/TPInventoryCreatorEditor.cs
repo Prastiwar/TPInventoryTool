@@ -14,13 +14,13 @@ namespace TP_InventoryEditor
             EditorGUILayout.LabelField("This script allows you to manage your Inventory");
 
             base.OnInspectorGUI();
+            
+            serializedObject.ApplyModifiedProperties();
 
             if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(30)))
             {
                 TPInventoryDesigner.OpenWindow();
             }
-
-            serializedObject.ApplyModifiedProperties();
         }
     }
 }

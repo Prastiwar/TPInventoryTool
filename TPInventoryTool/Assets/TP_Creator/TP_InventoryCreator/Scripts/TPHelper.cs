@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace TP_InventoryEditor
 {
     public class TPHelper
     {
+#if UNITY_EDITOR
         public static List<T> FindAssetsByType<T>() where T : UnityEngine.Object
         {
             List<T> assets = new List<T>();
@@ -22,5 +25,6 @@ namespace TP_InventoryEditor
             }
             return assets;
         }
+#endif
     }
 }

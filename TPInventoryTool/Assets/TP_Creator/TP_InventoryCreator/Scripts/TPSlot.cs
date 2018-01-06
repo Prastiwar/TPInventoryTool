@@ -18,7 +18,7 @@ namespace TP_Inventory
         [SerializeField] TPItem _item;
 
         public TPType Type;
-        public bool isEquipSlot;
+        public bool IsEquipSlot;
 
         public TPItem Item
         {
@@ -27,6 +27,16 @@ namespace TP_Inventory
         }
 
         void OnValidate()
+        {
+            if (Image == null) Image = GetComponent<Image>();
+            if (inventoryCreator == null) inventoryCreator = FindObjectOfType<TPInventoryCreator>();
+            if (actualTransform == null) actualTransform = GetComponent<Transform>();
+            if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
+
+            RefreshItemUI();
+        }
+
+        void Awake()
         {
             if (Image == null) Image = GetComponent<Image>();
             if (inventoryCreator == null) inventoryCreator = FindObjectOfType<TPInventoryCreator>();
@@ -57,11 +67,11 @@ namespace TP_Inventory
             if (_saved == -1)
                 return;
 
-            int length = inventoryCreator.InventoryPersistance.inventoryData.Items.Count;
+            int length = inventoryCreator.Data.Items.Count;
             for (int i = 0; i < length; i++)
             {
-                if (inventoryCreator.InventoryPersistance.inventoryData.Items[i].ID == _saved)
-                    Item = inventoryCreator.InventoryPersistance.inventoryData.Items[i];
+                if (inventoryCreator.Data.Items[i].ID == _saved)
+                    Item = inventoryCreator.Data.Items[i];
             }
         }
 
@@ -102,22 +112,22 @@ namespace TP_Inventory
                 {
                     // Jeśli to na co patrzysz jest equipem, to sprawdz czy ma ten sam typ co trzymany item
                     // Jeśli to na co patrzysz nie jest equipem to sprawdź, czy ma ten sam typ lub nie ma typu co trzymany item
-                    if (slot.isEquipSlot ? Item.Type == slot.Type : (Item.Type == slot.Type || slot.Type == null))
+                    if (slot.IsEquipSlot ? Item.Type == slot.Type : (Item.Type == slot.Type || slot.Type == null))
                     {
                         if (slot.Item != null) // if on looking slot there is actually Item - replace them
                         {
                             // Sprawdź, czy trzymany item jest Equip slotem
                             // Jeśli tak, to sprawdź czy item na patrzonym slocie jest tego typu co trzymany item.
                             // Replacing functionality
-                            if (isEquipSlot ? slot.Item.Type == Item.Type/* || slot.Item == null*/ : true)
+                            if (IsEquipSlot ? slot.Item.Type == Item.Type/* || slot.Item == null*/ : true)
                             {
-                                if (isEquipSlot)
+                                if (IsEquipSlot)
                                 {
                                     ModifyStats();
                                     slot.ModifyStats();
                                     PlaySound(TPSound.AudioTypeEnum.RemoveItem);
                                 }
-                                else if (slot.isEquipSlot)
+                                else if (slot.IsEquipSlot)
                                 {
                                     ModifyStats();
                                     slot.ModifyStats();
@@ -133,10 +143,10 @@ namespace TP_Inventory
                         }
                         else // If slot is free
                         {
-                            if (slot.isEquipSlot || isEquipSlot)
+                            if (slot.IsEquipSlot || IsEquipSlot)
                                 ModifyStats();
-                            PlaySound(slot.isEquipSlot ? TPSound.AudioTypeEnum.WearItem :
-                                (isEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.MoveItem));
+                            PlaySound(slot.IsEquipSlot ? TPSound.AudioTypeEnum.WearItem :
+                                (IsEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.MoveItem));
                             slot.Item = Item;
                             Item = null;
                         }
@@ -176,16 +186,16 @@ namespace TP_Inventory
             for (int i = 0; i < _length; i++)
             {
                 // If you click on equip slot, it will find no-equip slot
-                if (isEquipSlot ? !slots[i].isEquipSlot : slots[i].isEquipSlot)
+                if (IsEquipSlot ? !slots[i].IsEquipSlot : slots[i].IsEquipSlot)
                 {
                     // old code
-                    //if (isEquipSlot ?
+                    //if (IsEquipSlot ?
                     //    ((slots[i].Type == Item.Type || slots[i].Type == null) && slots[i].Item == null)
                     //    :
                     //    ((slots[i].Type == Item.Type && slots[i].Item == null)))
                     //{
                     //    ModifyStats();
-                    //    PlaySound(isEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
+                    //    PlaySound(IsEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
                     //    slots[i].Item = Item;
                     //    Item = null;
                     //    break;
@@ -193,16 +203,16 @@ namespace TP_Inventory
                     if ((slots[i].Type == Item.Type || slots[i].Type == null) && slots[i].Item == null)
                     {
                         ModifyStats();
-                        PlaySound(isEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
+                        PlaySound(IsEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
                         slots[i].Item = Item;
                         Item = null;
                         break;
                     }
-                    else if (!isEquipSlot && slots[i].Type == Item.Type)
+                    else if (!IsEquipSlot && slots[i].Type == Item.Type)
                     {
                         ModifyStats();
                         slots[i].ModifyStats();
-                        PlaySound(isEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
+                        PlaySound(IsEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
                         var tempItem = slots[i].Item;
                         slots[i].Item = Item;
                         Item = tempItem;
@@ -217,7 +227,7 @@ namespace TP_Inventory
             int _Modlength = Item.Modifiers.Length;
             for (int i = 0; i < _Modlength; i++)
             {
-                if (isEquipSlot)
+                if (IsEquipSlot)
                     Item.Modifiers[i].UnModify();
                 else
                     Item.Modifiers[i].Modify();
