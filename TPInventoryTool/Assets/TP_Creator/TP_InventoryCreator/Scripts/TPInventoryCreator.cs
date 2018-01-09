@@ -22,11 +22,11 @@ namespace TP_Inventory
         void FindData()
         {
             TPInventoryGUIData guiData = (TPInventoryGUIData)UnityEditor.AssetDatabase.LoadAssetAtPath(
-                    "Assets/TP_Creator/TP_InventoryCreator/EditorResources/EditorGUIData.asset",
+                    "Assets/TP_Creator/TP_InventoryCreator/EditorResources/InventoryEditorGUIData.asset",
                     typeof(TPInventoryGUIData));
-
-            Data = (TPInventoryData)UnityEditor.AssetDatabase.LoadAssetAtPath(
-                "Assets/" + guiData.InventoryDataPath + "InventoryData.asset", typeof(TPInventoryData));
+            if (guiData != null)
+                Data = (TPInventoryData)UnityEditor.AssetDatabase.LoadAssetAtPath(
+                    "Assets/" + guiData.InventoryDataPath + "InventoryData.asset", typeof(TPInventoryData));
         }
 #endif
         void Awake()

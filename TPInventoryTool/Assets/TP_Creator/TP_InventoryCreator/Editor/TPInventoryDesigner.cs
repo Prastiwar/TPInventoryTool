@@ -46,22 +46,54 @@ namespace TP_InventoryEditor
 
             InitCreator();
 
-            creator = new SerializedObject(InventoryCreator);
-            slotsParents = creator.FindProperty("SlotParentsTransform");
+            if (InventoryCreator != null)
+            {
+                creator = new SerializedObject(InventoryCreator);
+                slotsParents = creator.FindProperty("SlotParentsTransform");
+            }
         }
 
         void InitEditorData()
         {
             EditorData = AssetDatabase.LoadAssetAtPath(
-                   "Assets/TP_Creator/TP_InventoryCreator/EditorResources/EditorGUIData.asset",
+                   "Assets/TP_Creator/TP_InventoryCreator/EditorResources/InventoryEditorGUIData.asset",
                    typeof(TPInventoryGUIData)) as TPInventoryGUIData;
-
+            
             if (EditorData == null)
-            {
-                Debug.Log("Editor Data didn't found! Check path: 'Assets/TP_Creator/TP_InventoryCreator/EditorResources/EditorGUIData.asset'");
-                return;
-            }
+                CreateEditorData();
+            else
+                CheckGUIData();
+            
             skin = EditorData.GUISkin;
+        }
+
+        void CheckGUIData()
+        {
+            if (EditorData.GUISkin == null)
+                EditorData.GUISkin = AssetDatabase.LoadAssetAtPath(
+                      "Assets/TP_Creator/TP_InventoryCreator/EditorResources/TPInventoryGUISkin.guiskin",
+                      typeof(GUISkin)) as GUISkin;
+
+            if (EditorData.InventoryDataPath == null || EditorData.InventoryAssetsPath.Length < 5)
+                EditorData.InventoryDataPath = "TP_Creator/TP_InventoryCreator/InventoryData/";
+
+            if (EditorData.InventoryAssetsPath == null || EditorData.InventoryAssetsPath.Length < 5)
+                EditorData.InventoryAssetsPath = "TP_Creator/TP_InventoryCreator/InventoryData/";
+
+            if (EditorData.InventoryPrefab == null)
+                EditorData.InventoryPrefab = AssetDatabase.LoadAssetAtPath(
+                    "Assets/TP_Creator/TP_InventoryCreator/EditorResources/TPInventoryCanvas.prefab",
+                    typeof(GameObject)) as GameObject;
+        }
+
+        void CreateEditorData()
+        {
+            TPInventoryGUIData newEditorData = ScriptableObject.CreateInstance<TPInventoryGUIData>();
+            AssetDatabase.CreateAsset(newEditorData, "Assets/TP_Creator/TP_InventoryCreator/EditorResources/InventoryEditorGUIData.asset");
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            EditorData = newEditorData;
+            CheckGUIData();
         }
 
         void InitTextures()
@@ -123,7 +155,8 @@ namespace TP_InventoryEditor
 
         void OnGUI()
         {
-            creator.Update();
+            if(creator != null)
+                creator.Update();
 
             if (EditorApplication.isPlaying)
             {
@@ -136,7 +169,8 @@ namespace TP_InventoryEditor
             DrawManager();
             DrawTools();
 
-            creator.ApplyModifiedProperties();
+            if (creator != null)
+                creator.ApplyModifiedProperties();
         }
 
         void DrawLayouts()
@@ -205,7 +239,7 @@ namespace TP_InventoryEditor
             {
                 if (EditorData.InventoryPrefab == null)
                 {
-                    Debug.LogError("There is no inventory prefab in EditorGUIData file!");
+                    Debug.LogError("There is no inventory prefab in InventoryEditorGUIData file!");
                     return;
                 }
                 Instantiate(EditorData.InventoryPrefab);
@@ -252,21 +286,25 @@ namespace TP_InventoryEditor
         {
             GUILayout.BeginArea(toolSection);
             GUILayout.Label("Inventory Manager - Tools", skin.box);
-            if (GUILayout.Button("Items", skin.button, GUILayout.Height(50)))
+
+            if (InventoryCreator != null)
             {
-                TPInventoryToolsWindow.OpenToolWindow(TPInventoryToolsWindow.ToolEnum.Items);
-            }
-            if (GUILayout.Button("Types", skin.button, GUILayout.Height(50)))
-            {
-                TPInventoryToolsWindow.OpenToolWindow(TPInventoryToolsWindow.ToolEnum.Types);
-            }
-            if (GUILayout.Button("Stats", skin.button, GUILayout.Height(50)))
-            {
-                TPInventoryToolsWindow.OpenToolWindow(TPInventoryToolsWindow.ToolEnum.Stats);
-            }
-            if (GUILayout.Button("Slots", skin.button, GUILayout.Height(50)))
-            {
-                TPInventoryToolsWindow.OpenToolWindow(TPInventoryToolsWindow.ToolEnum.Slots);
+                if (GUILayout.Button("Items", skin.button, GUILayout.Height(50)))
+                {
+                    TPInventoryToolsWindow.OpenToolWindow(TPInventoryToolsWindow.ToolEnum.Items);
+                }
+                if (GUILayout.Button("Types", skin.button, GUILayout.Height(50)))
+                {
+                    TPInventoryToolsWindow.OpenToolWindow(TPInventoryToolsWindow.ToolEnum.Types);
+                }
+                if (GUILayout.Button("Stats", skin.button, GUILayout.Height(50)))
+                {
+                    TPInventoryToolsWindow.OpenToolWindow(TPInventoryToolsWindow.ToolEnum.Stats);
+                }
+                if (GUILayout.Button("Slots", skin.button, GUILayout.Height(50)))
+                {
+                    TPInventoryToolsWindow.OpenToolWindow(TPInventoryToolsWindow.ToolEnum.Slots);
+                }
             }
             GUILayout.EndArea();
         }
