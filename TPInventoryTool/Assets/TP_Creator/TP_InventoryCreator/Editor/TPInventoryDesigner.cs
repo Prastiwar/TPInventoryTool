@@ -222,8 +222,6 @@ namespace TP_InventoryEditor
             {
                 EditorGUILayout.LabelField("Put there parent of all slot's parent", skin.GetStyle("TipLabel"));
                 EditorGUILayout.PropertyField(slotsParents, GUIContent.none, GUILayout.Height(15));
-                //InventoryCreator.SlotParentsTransform =
-                //EditorGUILayout.ObjectField(InventoryCreator.SlotParentsTransform, typeof(Transform), true) as Transform;
 
                 if (GUI.changed)
                 {

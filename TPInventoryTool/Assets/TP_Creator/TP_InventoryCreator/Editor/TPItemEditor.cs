@@ -6,7 +6,7 @@ using UnityEngine;
 namespace TP_InventoryEditor
 {
     [CustomEditor(typeof(TPItem))]
-    public class TPItemEditor : ScriptlessEditor
+    public class TPItemEditor : ScriptlessInventoryEditor
     {
         List<TPItem> Items = new List<TPItem>();
         int length;

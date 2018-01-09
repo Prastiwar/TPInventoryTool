@@ -5,7 +5,7 @@ using UnityEngine;
 namespace TP_InventoryEditor
 {
     [CustomEditor(typeof(TPStat))]
-    public class TPStatEditor : ScriptlessEditor
+    public class TPStatEditor : ScriptlessInventoryEditor
     {
         public override void OnInspectorGUI()
         {

@@ -152,13 +152,6 @@ namespace TP_InventoryEditor
                 if (iterator >= slotObjs.Count)
                     iterator = 0;
             }
-
-            //SerializedObject slotObj = new SerializedObject(_object as UnityEngine.Object);
-            //SerializedProperty slot = slotObj.FindProperty("IsEquipSlot");
-            //EditorGUILayout.PropertyField(slot, GUIContent.none, GUILayout.Width(30));
-            //slotObj.ApplyModifiedProperties();
-
-            //(_object as TPSlot).IsEquipSlot = EditorGUILayout.Toggle((_object as TPSlot).IsEquipSlot, GUILayout.Width(30));
             EditAsset(_object as UnityEngine.Object);
         }
 

@@ -2,7 +2,7 @@
 
 namespace TP_InventoryEditor
 {
-    public class ScriptlessEditor : Editor
+    public class ScriptlessInventoryEditor : Editor
     {
         public readonly string[] scriptField = new string[] { "m_Script" };
 

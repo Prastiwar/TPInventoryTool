@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace TP_Inventory
@@ -14,11 +13,11 @@ namespace TP_Inventory
         Vector2 basePosition;
         CanvasGroup canvasGroup;
         Image Image;
-        //UnityAction onPointerEnterAction;
         [SerializeField] TPItem _item;
 
         public TPType Type;
         public bool IsEquipSlot;
+        [HideInInspector] public bool IsSelected;
 
         public TPItem Item
         {
@@ -84,7 +83,10 @@ namespace TP_Inventory
             if (Item == null)
                 return;
 
-            AutoEquip();
+            if (IsSelected)
+                AutoEquip();
+
+            IsSelected = !IsSelected;
         }
 
         public virtual void OnBeginDrag(PointerEventData eventData)
@@ -166,21 +168,8 @@ namespace TP_Inventory
         {
             if (Item == null)
                 return;
-
-            //if (eventData != null)
-            //{
-            //    if (onPointerEnterAction != null)
-            //        OnPointerEnter();
-            //}
+            
         }
-        //void OnPointerEnter()
-        //{
-        //    onPointerEnterAction();
-        //}
-        //public void SetPointerEnter(UnityAction _action)
-        //{
-        //    onPointerEnterAction = _action;
-        //}
 
         void AutoEquip()
         {
@@ -192,18 +181,6 @@ namespace TP_Inventory
                 // If you click on equip slot, it will find no-equip slot
                 if (IsEquipSlot ? !slots[i].IsEquipSlot : slots[i].IsEquipSlot)
                 {
-                    // old code
-                    //if (IsEquipSlot ?
-                    //    ((slots[i].Type == Item.Type || slots[i].Type == null) && slots[i].Item == null)
-                    //    :
-                    //    ((slots[i].Type == Item.Type && slots[i].Item == null)))
-                    //{
-                    //    ModifyStats();
-                    //    PlaySound(IsEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
-                    //    slots[i].Item = Item;
-                    //    Item = null;
-                    //    break;
-                    //}
                     if ((slots[i].Type == Item.Type || slots[i].Type == null) && slots[i].Item == null)
                     {
                         ModifyStats();

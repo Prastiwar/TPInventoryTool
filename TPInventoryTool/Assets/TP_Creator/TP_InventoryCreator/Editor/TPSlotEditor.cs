@@ -4,7 +4,7 @@ using TP_Inventory;
 namespace TP_InventoryEditor
 {
     [CustomEditor(typeof(TPSlot))]
-    public class TPSlotEditor : ScriptlessEditor
+    public class TPSlotEditor : ScriptlessInventoryEditor
     {
         public override void OnInspectorGUI()
         {

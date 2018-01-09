@@ -4,7 +4,7 @@ using UnityEditor;
 namespace TP_InventoryEditor
 {
     [CustomEditor(typeof(TPInventoryGUIData))]
-    public class TPInventoryGUIDataEditor : ScriptlessEditor
+    public class TPInventoryGUIDataEditor : ScriptlessInventoryEditor
     {
         TPInventoryGUIData TPInventoryEditorData;
 
