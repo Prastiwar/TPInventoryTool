@@ -84,6 +84,8 @@ namespace TP_InventoryEditor
                 EditorData.InventoryPrefab = AssetDatabase.LoadAssetAtPath(
                     "Assets/TP_Creator/TP_InventoryCreator/EditorResources/TPInventoryCanvas.prefab",
                     typeof(GameObject)) as GameObject;
+
+            EditorUtility.SetDirty(EditorData);
         }
 
         void CreateEditorData()
@@ -223,6 +225,7 @@ namespace TP_InventoryEditor
                 InventoryCreator = go.GetComponent<TPInventoryCreator>();
                 UpdateManager();
                 Debug.Log("Inventory Manager created!");
+                OnEnable();
             }
 
             if (GUILayout.Button("Initialize Exist Manager", skin.button, GUILayout.Height(50)))

@@ -197,23 +197,25 @@ namespace TP_InventoryEditor
         void CreateScriptable()
         {
             string assetPath = "Assets/" + TPInventoryDesigner.EditorData.InventoryAssetsPath;
-
+            string folderName = "";
             UnityEngine.Object newObj = null;
-            var inventoryData = TPInventoryDesigner.InventoryCreator.Data;
 
             switch (tool)
             {
                 case ToolEnum.Items:
                     newObj = ScriptableObject.CreateInstance<TPItem>();
-                    assetPath += "Items/New Item" + inventoryData.Items.Count + ".asset";
+                    folderName = "Items";
+                    assetPath += folderName + "/New Item.asset";
                     break;
                 case ToolEnum.Types:
                     newObj = ScriptableObject.CreateInstance<TPType>();
-                    assetPath += "Types/New Type" + inventoryData.Types.Count + ".asset";
+                    folderName = "Types";
+                    assetPath += folderName + "/New Type.asset";
                     break;
                 case ToolEnum.Stats:
                     newObj = ScriptableObject.CreateInstance<TPStat>();
-                    assetPath += "Stats/New Stat" + inventoryData.Stats.Count + ".asset";
+                    folderName = "Stats";
+                    assetPath += folderName + "/New Stat.asset";
                     break;
                 case ToolEnum.Slots:
                     return;
@@ -221,17 +223,18 @@ namespace TP_InventoryEditor
                     return;
             }
 
-            if (AssetDatabase.IsValidFolder("Assets/" + TPInventoryDesigner.EditorData.InventoryAssetsPath))
+            if (!AssetDatabase.IsValidFolder("Assets/" + TPInventoryDesigner.EditorData.InventoryAssetsPath + folderName))
             {
-                Debug.Log("This path doesn't exist, create one!");
+                Debug.Log(assetPath);
+                Debug.Log("This assets path doesn't exist, create one or check EditorGUIData to change path.");
                 return;
             }
 
-            AssetDatabase.CreateAsset(newObj, assetPath);
+            AssetDatabase.CreateAsset(newObj, AssetDatabase.GenerateUniqueAssetPath(assetPath));
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            Debug.Log(newObj.name + " created in " + assetPath);
+            Debug.Log(newObj.name + " created in Assets/" + TPInventoryDesigner.EditorData.InventoryAssetsPath + folderName);
             TPInventoryDesigner.UpdateManager();
             SetToolWindow();
         }

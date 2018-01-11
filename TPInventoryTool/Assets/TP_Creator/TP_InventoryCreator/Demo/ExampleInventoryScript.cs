@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TP_Inventory;
+﻿using TP_Inventory;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DemoScript : MonoBehaviour
+public class ExampleInventoryScript : MonoBehaviour
 {
     [SerializeField] TPInventoryCreator manager;
     [SerializeField] TPSlot[] slots;
