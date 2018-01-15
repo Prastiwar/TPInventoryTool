@@ -19,6 +19,8 @@ namespace TP_Inventory
         [HideInInspector] public bool IsEquipSlot;
         [HideInInspector] public bool IsSelectable;
         [HideInInspector] public bool IsSelected;
+        public delegate void OnSelection();
+        OnSelection onSelection;
 
         public TPItem Item
         {
@@ -84,9 +86,15 @@ namespace TP_Inventory
             if (Item == null)
                 return;
 
-            if (IsSelectable && IsSelected)
-                //AutoEquip();
-                NewAutoEquip();
+            if (IsSelectable)
+            {
+                if (!IsSelected && onSelection != null)
+                    onSelection();
+                if (IsSelected)
+                    AutoEquip();
+            }
+            else
+                AutoEquip();
 
             IsSelected = !IsSelected;
         }
@@ -173,46 +181,22 @@ namespace TP_Inventory
             
         }
 
-        void AutoEquip()
+        public void SetOnSelection(OnSelection _OnSelection)
         {
-            var slots = inventoryCreator.Slots;
-            int _length = slots.Count;
-
-            for (int i = 0; i < _length; i++)
-            {
-                // If you click on equip slot, it will find no-equip slot
-                if (IsEquipSlot ? !slots[i].IsEquipSlot : slots[i].IsEquipSlot)
-                {
-                    if ((slots[i].Type == Item.Type || slots[i].Type == null) && slots[i].Item == null)
-                    {
-                        ModifyStats();
-                        PlaySound(IsEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
-                        slots[i].Item = Item;
-                        Item = null;
-                        break;
-                    }
-                    else if (!IsEquipSlot && slots[i].Type == Item.Type)
-                    {
-                        ModifyStats();
-                        slots[i].ModifyStats();
-                        PlaySound(IsEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
-                        var tempItem = slots[i].Item;
-                        slots[i].Item = Item;
-                        Item = tempItem;
-                        break;
-                    }
-                }
-            }
+            onSelection = _OnSelection;
         }
 
-        void NewAutoEquip()
+        void AutoEquip()
         {
-            if (inventoryCreator.IsFull() || (inventoryCreator.IsFullType(null) && inventoryCreator.IsFullType(Item.Type)))
-                return;
-
             if (IsEquipSlot)
             {
                 // DeEquip item
+                if (inventoryCreator.IsFull() || (inventoryCreator.IsFullOfType(null) && inventoryCreator.IsFullOfType(Item.Type)))
+                {
+                    PlaySound(TPSound.AudioTypeEnum.Failure);
+                    return;
+                }
+
                 if (Item.Type != null)
                 {
                     if (inventoryCreator.FindFreeNoEquipSlotWithType(Item.Type) != null)
@@ -221,9 +205,7 @@ namespace TP_Inventory
                         ChangeSlot(inventoryCreator.FindFreeNoEquipSlot());
                 }
                 else
-                {
                     ChangeSlot(inventoryCreator.FindFreeNoEquipSlot());
-                }
             }
             else
             {
@@ -233,11 +215,31 @@ namespace TP_Inventory
                     if (inventoryCreator.FindFreeEquipSlotWithType(Item.Type) != null)
                         ChangeSlot(inventoryCreator.FindFreeEquipSlotWithType(Item.Type));
                     else
-                        ChangeSlot(inventoryCreator.FindFreeEquipSlot());
+                    {
+                        if (inventoryCreator.FindFreeEquipSlot() != null)
+                            ChangeSlot(inventoryCreator.FindFreeEquipSlot());
+                        else
+                        {
+                            int length = inventoryCreator.Slots.Count;
+                            for (int i = 0; i < length; i++)
+                            {
+                                if (inventoryCreator.Slots[i].Item)
+                                    if (inventoryCreator.Slots[i].IsEquipSlot && inventoryCreator.Slots[i].Item.Type == Item.Type)
+                                    {
+                                        ChangeSlot(inventoryCreator.Slots[i]);
+                                        return;
+                                    }
+                            }
+                            PlaySound(TPSound.AudioTypeEnum.Failure);
+                        }
+                    }
                 }
                 else
-                { 
-                    ChangeSlot(inventoryCreator.FindFreeEquipSlot());
+                {
+                    if (inventoryCreator.FindFreeEquipSlot() != null)
+                        ChangeSlot(inventoryCreator.FindFreeEquipSlot());
+                    else
+                        PlaySound(TPSound.AudioTypeEnum.Failure);
                 }
             }
         }
@@ -264,7 +266,6 @@ namespace TP_Inventory
                     Item.Modifiers[i].UnModify();
                 else
                     Item.Modifiers[i].Modify();
-                StartCoroutine(Item.Modifiers[i].StatValueChanged());
             }
         }
 

@@ -31,14 +31,23 @@ namespace TP_InventoryEditor
         Vector2 scrollPos = Vector2.zero;
         Texture2D mainTexture;
 
+        static bool isSet = false;
+
+        List<SerializedObject> slotObjs = new List<SerializedObject>();
+        List<SerializedProperty> slotProps = new List<SerializedProperty>();
+        List<SerializedProperty> slotSelectable = new List<SerializedProperty>();
+        int iterator = 0;
+        int[] index;
+        string[] enumNamesList;
+
         public static void OpenToolWindow(ToolEnum _tool)
         {
             window = (TPInventoryToolsWindow)GetWindow(typeof(TPInventoryToolsWindow));
-            window.minSize = new Vector2(400, 400);
-            window.maxSize = new Vector2(400, 400);
+            window.minSize = new Vector2(500, 400);
+            window.maxSize = new Vector2(500, 400);
             window.Show();
             tool = _tool;
-            SetToolWindow();
+            isSet = false;
         }
 
         void Update()
@@ -60,12 +69,18 @@ namespace TP_InventoryEditor
             mainRect = new Rect(0, 0, Screen.width, Screen.height);
             GUI.DrawTexture(mainRect, mainTexture);
             scrollPos = GUILayout.BeginScrollView(scrollPos, false, false, GUILayout.Width(window.position.width), GUILayout.Height(window.position.height));
+            if(!isSet)
+                SetToolWindow();
             DrawTool();
             GUILayout.EndScrollView();
         }
 
-        public static void SetToolWindow()
+        void SetToolWindow()
         {
+            isSet = true;
+            enumNamesList = new string[TPInventoryDesigner.InventoryCreator.Data.Types.Count + 1];
+            index = new int[TPInventoryDesigner.InventoryCreator.Slots.Count];
+
             switch (tool)
             {
                 case ToolEnum.Items:
@@ -95,7 +110,7 @@ namespace TP_InventoryEditor
                 case ToolEnum.Slots:
                     loaded = "Slots Loaded";
                     noLoaded = "No Slots Loaded! Try to Refresh / Update Manager or change slot parent!";
-                    horizontalVar = "Is Equip Slot";
+                    horizontalVar = "Equip Slot";
                     array = TPInventoryDesigner.InventoryCreator.Slots.ToArray();
                     action = DrawSlots;
                     type = typeof(TPSlot);
@@ -120,8 +135,17 @@ namespace TP_InventoryEditor
                 return;
             }
             GUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(loaded, GUILayout.Width(180));
-            EditorGUILayout.LabelField(horizontalVar, GUILayout.Width(150));
+            if (tool == ToolEnum.Slots)
+            {
+                EditorGUILayout.LabelField(loaded, GUILayout.Width(155));
+                EditorGUILayout.LabelField(horizontalVar, GUILayout.Width(62));
+                EditorGUILayout.LabelField("Selectable", GUILayout.Width(65));
+            }
+            else
+            {
+                EditorGUILayout.LabelField(loaded, GUILayout.Width(180));
+                EditorGUILayout.LabelField(horizontalVar, GUILayout.Width(150));
+            }
             GUILayout.EndHorizontal();
 
             foreach (UnityEngine.Object element in array)
@@ -135,26 +159,33 @@ namespace TP_InventoryEditor
             }
         }
 
-        static List<SerializedObject> slotObjs = new List<SerializedObject>();
-        static List<SerializedProperty> slotProps = new List<SerializedProperty>();
-        static int iterator = 0;
-
-        static void DrawSlots()
+        void DrawSlots()
         {
             if (slotObjs.Count != TPInventoryDesigner.InventoryCreator.Slots.Count)
             {
                 SerializedObject slotObj = new SerializedObject(_object as UnityEngine.Object);
                 SerializedProperty slotProp = slotObj.FindProperty("IsEquipSlot");
+                SerializedProperty slotSelect = slotObj.FindProperty("IsSelectable");
                 slotObjs.Add(slotObj);
                 slotProps.Add(slotProp);
+                slotSelectable.Add(slotSelect);
 
                 EditorGUILayout.PropertyField(slotProp, GUIContent.none, GUILayout.Width(30));
-                slotObj.ApplyModifiedProperties();
+                EditorGUILayout.PropertyField(slotSelect, GUIContent.none, GUILayout.Width(30));
+                TypesPopup(_object as UnityEngine.Object);
+
+                if(GUI.changed)
+                    slotObj.ApplyModifiedProperties();
             }
             else
             {
                 EditorGUILayout.PropertyField(slotProps[iterator], GUIContent.none, GUILayout.Width(30));
-                slotObjs[iterator].ApplyModifiedProperties();
+                EditorGUILayout.PropertyField(slotSelectable[iterator], GUIContent.none, GUILayout.Width(30));
+                TypesPopup(_object as UnityEngine.Object);
+
+                if (GUI.changed)
+                    slotObjs[iterator].ApplyModifiedProperties();
+
                 iterator++;
                 if (iterator >= slotObjs.Count)
                     iterator = 0;
@@ -162,26 +193,57 @@ namespace TP_InventoryEditor
             EditAsset(_object as UnityEngine.Object);
         }
 
-        static void DrawStats()
+        void TypesPopup(UnityEngine.Object _TPslot)
+        {
+            int length = TPInventoryDesigner.InventoryCreator.Data.Types.Count;
+            for (int i = 0; i < length; i++)
+                enumNamesList[i] = TPInventoryDesigner.InventoryCreator.Data.Types[i].name;
+            enumNamesList[enumNamesList.Length - 1] = "Not Specified";
+
+            int selectionFromInspector = enumNamesList.Length - 1;
+            for (int i = 0; i < length; i++)
+            {
+                if ((_TPslot as TPSlot).Type)
+                {
+                    if ((_TPslot as TPSlot).Type.name == enumNamesList[i])
+                        selectionFromInspector = i;
+                }
+            }
+
+            index[iterator] = EditorGUILayout.Popup(selectionFromInspector, enumNamesList, GUILayout.Width(80));
+
+            if(index[iterator] == enumNamesList.Length - 1)
+            (_TPslot as TPSlot).Type = null;
+            else
+            (_TPslot as TPSlot).Type = TPInventoryDesigner.InventoryCreator.Data.Types[index[iterator]];
+
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(_TPslot);
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+            }
+        }
+
+        void DrawStats()
         {
             (_object as TPStat).Value = EditorGUILayout.FloatField((_object as TPStat).Value);
             DeleteAsset(_object as UnityEngine.Object);
             EditAsset(_object as UnityEngine.Object);
         }
 
-        static void DrawTypes()
+        void DrawTypes()
         {
             DeleteAsset(_object as UnityEngine.Object);
             EditAsset(_object as UnityEngine.Object);
         }
 
-        static void DrawItems()
+        void DrawItems()
         {
             DeleteAsset(_object as UnityEngine.Object);
             EditAsset(_object as UnityEngine.Object);
         }
 
-        static void DeleteAsset(UnityEngine.Object obj)
+        void DeleteAsset(UnityEngine.Object obj)
         {
             if (GUILayout.Button("Del", GUILayout.Width(30)))
             {
@@ -190,12 +252,13 @@ namespace TP_InventoryEditor
 
                 SetToolWindow();
                 TPInventoryDesigner.UpdateManager();
+                SetToolWindow();
             }
         }
 
-        static void EditAsset(UnityEngine.Object obj)
+        void EditAsset(UnityEngine.Object obj)
         {
-            if (GUILayout.Button("Edit", GUILayout.Width(35)))
+            if (GUILayout.Button("Edit", GUILayout.Width(40)))
             {
                 AssetDatabase.OpenAsset(obj);
             }

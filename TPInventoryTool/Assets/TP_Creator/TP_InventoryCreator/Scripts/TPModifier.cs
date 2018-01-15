@@ -21,7 +21,6 @@ namespace TP_Inventory
         public ModifierCommand ModifyCommand;
         public float Value;
         float tempValue;
-        WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
 
         string NullStat = "You don't have Modifier reference in this item!";
 
@@ -32,20 +31,25 @@ namespace TP_Inventory
                 Debug.LogError(NullStat);
                 return;
             }
+
+            BeforeChange();
+
             switch (ModifyCommand)
             {
                 case ModifierCommand.Increase:
-                        if (ModifyType == ModifierType.Percentage)
-                            tempValue = Mathf.CeilToInt((Value / Stat.Value) * 100);
-                        Stat.Value = ModifyType == ModifierType.Flat ? Stat.Value += Value : Stat.Value += tempValue;
+                    if (ModifyType == ModifierType.Percentage)
+                        tempValue = Mathf.CeilToInt((Value / Stat.Value) * 100);
+                    Stat.Value = ModifyType == ModifierType.Flat ? Stat.Value += Value : Stat.Value += tempValue;
                     break;
 
                 case ModifierCommand.Decrease:
-                        if (ModifyType == ModifierType.Percentage)
-                            tempValue = Mathf.CeilToInt((Value / Stat.Value) * 100);
-                        Stat.Value = ModifyType == ModifierType.Flat ? Stat.Value -= Value : Stat.Value -= tempValue;
+                    if (ModifyType == ModifierType.Percentage)
+                        tempValue = Mathf.CeilToInt((Value / Stat.Value) * 100);
+                    Stat.Value = ModifyType == ModifierType.Flat ? Stat.Value -= Value : Stat.Value -= tempValue;
                     break;
             }
+
+            AfterChange();
         }
 
         public void UnModify()
@@ -55,6 +59,9 @@ namespace TP_Inventory
                 Debug.LogError(NullStat);
                 return;
             }
+
+            BeforeChange();
+
             switch (ModifyCommand)
             {
                 case ModifierCommand.Increase:
@@ -68,13 +75,20 @@ namespace TP_Inventory
                 default:
                     break;
             }
+
+            AfterChange();
         }
 
-        public IEnumerator StatValueChanged()
+        void BeforeChange()
         {
-            Stat.HasChanged = true;
-            yield return waitForEndOfFrame;
-            Stat.HasChanged = false;
+            if (Stat.BeforeChange != null)
+                Stat.BeforeChange();
+        }
+
+        void AfterChange()
+        {
+            if (Stat.AfterChange != null)
+                Stat.AfterChange();
         }
     }
 

@@ -176,43 +176,43 @@ Prefab:
         type: 2}
       propertyPath: Type
       value: 
-      objectReference: {fileID: 11400000, guid: 9f6f321324d523c47afa9b275655c6fb,
+      objectReference: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712,
         type: 2}
     - target: {fileID: 114600350492819212, guid: 37a21ef21769bbb4ba1be89ef1c18693,
         type: 2}
       propertyPath: Type
       value: 
-      objectReference: {fileID: 11400000, guid: 9f6f321324d523c47afa9b275655c6fb,
+      objectReference: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712,
         type: 2}
     - target: {fileID: 114958994489375714, guid: 37a21ef21769bbb4ba1be89ef1c18693,
         type: 2}
       propertyPath: Type
       value: 
-      objectReference: {fileID: 11400000, guid: 9f6f321324d523c47afa9b275655c6fb,
+      objectReference: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712,
         type: 2}
     - target: {fileID: 114988663338165336, guid: 37a21ef21769bbb4ba1be89ef1c18693,
         type: 2}
       propertyPath: Type
       value: 
-      objectReference: {fileID: 11400000, guid: 9f6f321324d523c47afa9b275655c6fb,
+      objectReference: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712,
         type: 2}
     - target: {fileID: 114489656871553522, guid: 37a21ef21769bbb4ba1be89ef1c18693,
         type: 2}
       propertyPath: Type
       value: 
-      objectReference: {fileID: 11400000, guid: 9f6f321324d523c47afa9b275655c6fb,
+      objectReference: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712,
         type: 2}
     - target: {fileID: 114011498554927192, guid: 37a21ef21769bbb4ba1be89ef1c18693,
         type: 2}
       propertyPath: Type
       value: 
-      objectReference: {fileID: 11400000, guid: 9f6f321324d523c47afa9b275655c6fb,
+      objectReference: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712,
         type: 2}
     - target: {fileID: 114757007308090984, guid: 37a21ef21769bbb4ba1be89ef1c18693,
         type: 2}
       propertyPath: Type
       value: 
-      objectReference: {fileID: 11400000, guid: 9f6f321324d523c47afa9b275655c6fb,
+      objectReference: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712,
         type: 2}
     - target: {fileID: 114456126856709012, guid: 37a21ef21769bbb4ba1be89ef1c18693,
         type: 2}
@@ -223,6 +223,116 @@ Prefab:
       propertyPath: m_Name
       value: ItemSlot (0)
       objectReference: {fileID: 0}
+    - target: {fileID: 114424658162502376, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsSelectable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114673812479237002, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: Type
+      value: 
+      objectReference: {fileID: 11400000, guid: 3e1736e3b5299a94698fe284713fd479,
+        type: 2}
+    - target: {fileID: 114165303694328194, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: Type
+      value: 
+      objectReference: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712,
+        type: 2}
+    - target: {fileID: 114216847747217056, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: Type
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114966030986147560, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: Type
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114424658162502376, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: Type
+      value: 
+      objectReference: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712,
+        type: 2}
+    - target: {fileID: 114949994229955644, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: Type
+      value: 
+      objectReference: {fileID: 11400000, guid: a73c21a95d21e714fab408462c52d874,
+        type: 2}
+    - target: {fileID: 114464942934639250, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: Type
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114673812479237002, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsSelectable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114949994229955644, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsSelectable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114216847747217056, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsSelectable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114306679355833904, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsSelected
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114306679355833904, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsSelectable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114424658162502376, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsEquipSlot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114949994229955644, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsEquipSlot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114306679355833904, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsEquipSlot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114673812479237002, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsEquipSlot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114972348247897968, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsSelectable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114757007308090984, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsSelectable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114011498554927192, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: IsSelectable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114306679355833904, guid: 37a21ef21769bbb4ba1be89ef1c18693,
+        type: 2}
+      propertyPath: Type
+      value: 
+      objectReference: {fileID: 11400000, guid: 9f6f321324d523c47afa9b275655c6fb,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 37a21ef21769bbb4ba1be89ef1c18693, type: 2}
   m_IsPrefabParent: 0

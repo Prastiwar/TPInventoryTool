@@ -9,7 +9,8 @@ public struct TPSound
         RemoveItem,
         WearItem,
         MoveItem,
-        UseItem
+        UseItem,
+        Failure
     }
     public AudioClip AudioClip;
     public AudioTypeEnum AudioType;

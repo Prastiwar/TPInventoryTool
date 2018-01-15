@@ -15,7 +15,9 @@ namespace TP_Inventory
             EquipSlot,
             EquipSlotWithType,
             NoEquipSlot,
-            NoEquipSlotWithType
+            NoEquipSlotWithType,
+            AnyFree,
+            AnyFreeWithType
         }
 
         void OnValidate()
@@ -66,12 +68,12 @@ namespace TP_Inventory
             return FreeSlotsLength() != 0 ? false : true;
         }
 
-        public bool IsFullType(TPType type)
+        public bool IsFullOfType(TPType type)
         {
             return FreeSlotsLength(type) != 0 ? false : true;
         }
 
-        public int FreeSlotsTypeLength(TPType type)
+        public int FreeSlotsOfTypeLength(TPType type)
         {
             return FreeSlotsLength(type);
         }
@@ -99,17 +101,14 @@ namespace TP_Inventory
             return freeSlots;
         }
 
-        //public TPSlot FindFreeSlot()
-        //{
-        //    bool boolean = Slots[indexer].Item == null;
-        //    return FindSlot(boolean);
-        //}
-
-        //public TPSlot FindFreeSlotWithType(TPType type)
-        //{
-        //    bool boolean = Slots[indexer].Item == null && Slots[indexer].Type == type;
-        //    return FindSlot(boolean);
-        //}
+        public TPSlot FindAnyFreeSlot()
+        {
+            return FindSlot(Finder.AnyFree, null);
+        }
+        public TPSlot FindAnyFreeSlotWithType(TPType type)
+        {
+            return FindSlot(Finder.AnyFreeWithType, type);
+        }
 
         public TPSlot FindFreeEquipSlot()
         {
@@ -150,6 +149,13 @@ namespace TP_Inventory
                 case Finder.NoEquipSlotWithType:
                     boolean = Slots[indexer].Item == null &&
                         !Slots[indexer].IsEquipSlot && Slots[indexer].Type == type;
+                    break;
+                case Finder.AnyFree:
+                    boolean = Slots[indexer].Item == null;
+                    break;
+                case Finder.AnyFreeWithType:
+                    boolean = Slots[indexer].Item == null &&
+                        Slots[indexer].Type == type;
                     break;
                 default:
                     break;

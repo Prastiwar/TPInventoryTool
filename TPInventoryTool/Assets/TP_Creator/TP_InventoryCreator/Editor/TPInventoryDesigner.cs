@@ -281,9 +281,6 @@ namespace TP_InventoryEditor
             InitCreator();
             InventoryCreator.RefreshSlots();
             EditorUtility.SetDirty(InventoryCreator);
-
-            if (TPInventoryToolsWindow.window)
-                TPInventoryToolsWindow.SetToolWindow();
         }
 
         void DrawTools()
