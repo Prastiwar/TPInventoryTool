@@ -19,7 +19,7 @@ MonoBehaviour:
   Type: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712, type: 2}
   Modifiers:
   - Stat: {fileID: 11400000, guid: 42ca8d06985227146b83748c303524aa, type: 2}
-    ModifyType: 1
+    ModifyType: 0
     ModifyCommand: 0
     Value: 100
   Sounds:

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 namespace TP_InventoryEditor
 {
+    [InitializeOnLoad]
     public class TPInventoryToolsWindow : EditorWindow
     {
         public static TPInventoryToolsWindow window;
@@ -38,6 +39,12 @@ namespace TP_InventoryEditor
             window.Show();
             tool = _tool;
             SetToolWindow();
+        }
+
+        void Update()
+        {
+            if (EditorApplication.isCompiling)
+                this.Close();
         }
 
         void OnEnable()
@@ -224,11 +231,7 @@ namespace TP_InventoryEditor
             }
 
             if (!AssetDatabase.IsValidFolder("Assets/" + TPInventoryDesigner.EditorData.InventoryAssetsPath + folderName))
-            {
-                Debug.Log(assetPath);
-                Debug.Log("This assets path doesn't exist, create one or check EditorGUIData to change path.");
-                return;
-            }
+                System.IO.Directory.CreateDirectory("Assets/" + TPInventoryDesigner.EditorData.InventoryAssetsPath + folderName);
 
             AssetDatabase.CreateAsset(newObj, AssetDatabase.GenerateUniqueAssetPath(assetPath));
             AssetDatabase.SaveAssets();

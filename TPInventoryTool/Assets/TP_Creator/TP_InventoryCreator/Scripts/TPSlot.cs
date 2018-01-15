@@ -13,10 +13,11 @@ namespace TP_Inventory
         Vector2 basePosition;
         CanvasGroup canvasGroup;
         Image Image;
-        [SerializeField] TPItem _item;
+        TPItem _item;
 
-        public TPType Type;
-        public bool IsEquipSlot;
+        [HideInInspector] public TPType Type;
+        [HideInInspector] public bool IsEquipSlot;
+        [HideInInspector] public bool IsSelectable;
         [HideInInspector] public bool IsSelected;
 
         public TPItem Item
@@ -83,8 +84,9 @@ namespace TP_Inventory
             if (Item == null)
                 return;
 
-            if (IsSelected)
-                AutoEquip();
+            if (IsSelectable && IsSelected)
+                //AutoEquip();
+                NewAutoEquip();
 
             IsSelected = !IsSelected;
         }
@@ -203,8 +205,58 @@ namespace TP_Inventory
             }
         }
 
+        void NewAutoEquip()
+        {
+            if (inventoryCreator.IsFull() || (inventoryCreator.IsFullType(null) && inventoryCreator.IsFullType(Item.Type)))
+                return;
+
+            if (IsEquipSlot)
+            {
+                // DeEquip item
+                if (Item.Type != null)
+                {
+                    if (inventoryCreator.FindFreeNoEquipSlotWithType(Item.Type) != null)
+                        ChangeSlot(inventoryCreator.FindFreeNoEquipSlotWithType(Item.Type));
+                    else
+                        ChangeSlot(inventoryCreator.FindFreeNoEquipSlot());
+                }
+                else
+                {
+                    ChangeSlot(inventoryCreator.FindFreeNoEquipSlot());
+                }
+            }
+            else
+            {
+                // Equip item
+                if (Item.Type != null)
+                {
+                    if (inventoryCreator.FindFreeEquipSlotWithType(Item.Type) != null)
+                        ChangeSlot(inventoryCreator.FindFreeEquipSlotWithType(Item.Type));
+                    else
+                        ChangeSlot(inventoryCreator.FindFreeEquipSlot());
+                }
+                else
+                { 
+                    ChangeSlot(inventoryCreator.FindFreeEquipSlot());
+                }
+            }
+        }
+
+        void ChangeSlot(TPSlot slot)
+        {
+            ModifyStats();
+            slot.ModifyStats();
+            PlaySound(IsEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
+            var tempItem = slot.Item;
+            slot.Item = Item;
+            Item = tempItem;
+        }
+
         void ModifyStats()
         {
+            if (Item == null)
+                return;
+
             int _Modlength = Item.Modifiers.Length;
             for (int i = 0; i < _Modlength; i++)
             {

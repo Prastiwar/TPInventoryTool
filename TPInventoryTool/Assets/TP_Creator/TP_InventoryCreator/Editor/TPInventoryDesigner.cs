@@ -4,6 +4,7 @@ using TP_Inventory;
 
 namespace TP_InventoryEditor
 {
+    [InitializeOnLoad]
     public class TPInventoryDesigner : EditorWindow
     {
         public static TPInventoryGUIData EditorData;
