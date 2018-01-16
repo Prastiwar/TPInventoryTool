@@ -43,8 +43,8 @@ namespace TP_InventoryEditor
         public static void OpenToolWindow(ToolEnum _tool)
         {
             window = (TPInventoryToolsWindow)GetWindow(typeof(TPInventoryToolsWindow));
-            window.minSize = new Vector2(500, 400);
-            window.maxSize = new Vector2(500, 400);
+            window.minSize = new Vector2(425, 400);
+            window.maxSize = new Vector2(425, 400);
             window.Show();
             tool = _tool;
             isSet = false;
@@ -140,6 +140,7 @@ namespace TP_InventoryEditor
                 EditorGUILayout.LabelField(loaded, GUILayout.Width(155));
                 EditorGUILayout.LabelField(horizontalVar, GUILayout.Width(62));
                 EditorGUILayout.LabelField("Selectable", GUILayout.Width(65));
+                EditorGUILayout.LabelField("Type", GUILayout.Width(65));
             }
             else
             {
@@ -210,7 +211,7 @@ namespace TP_InventoryEditor
                 }
             }
 
-            index[iterator] = EditorGUILayout.Popup(selectionFromInspector, enumNamesList, GUILayout.Width(80));
+            index[iterator] = EditorGUILayout.Popup(selectionFromInspector, enumNamesList, GUILayout.Width(100));
 
             if(index[iterator] == enumNamesList.Length - 1)
             (_TPslot as TPSlot).Type = null;
