@@ -115,60 +115,71 @@ namespace TP_Inventory
 
             actualTransform.position = eventData.position;
         }
-
+        
         public virtual void OnEndDrag(PointerEventData eventData)
         {
             if (Item == null)
                 return;
 
-            if (eventData.pointerEnter != null)
+            if (eventData.pointerEnter == null)
             {
-                TPSlot slot = eventData.pointerEnter.GetComponent<TPSlot>();
-                if (slot != null)
-                {
-                    // Jeśli to na co patrzysz jest equipem, to sprawdz czy ma ten sam typ co trzymany item
-                    // Jeśli to na co patrzysz nie jest equipem to sprawdź, czy ma ten sam typ lub nie ma typu co trzymany item
-                    if (slot.IsEquipSlot ? Item.Type == slot.Type : (Item.Type == slot.Type || slot.Type == null))
-                    {
-                        if (slot.Item != null) // if on looking slot there is actually Item - replace them
-                        {
-                            // Sprawdź, czy trzymany item jest Equip slotem
-                            // Jeśli tak, to sprawdź czy item na patrzonym slocie jest tego typu co trzymany item.
-                            // Replacing functionality
-                            if (IsEquipSlot ? slot.Item.Type == Item.Type/* || slot.Item == null*/ : true)
-                            {
-                                if (IsEquipSlot)
-                                {
-                                    ModifyStats();
-                                    slot.ModifyStats();
-                                    PlaySound(TPSound.AudioTypeEnum.RemoveItem);
-                                }
-                                else if (slot.IsEquipSlot)
-                                {
-                                    ModifyStats();
-                                    slot.ModifyStats();
-                                    PlaySound(TPSound.AudioTypeEnum.WearItem);
-                                }
-                                else
-                                    PlaySound(TPSound.AudioTypeEnum.MoveItem);
+                DisableStick();
+                return;
+            }
+            TPSlot slotEntered = eventData.pointerEnter.GetComponent<TPSlot>();
+            if (slotEntered == null)
+            {
+                DisableStick();
+                return;
+            }
 
-                                var tempItem = slot.Item;
-                                slot.Item = Item;
-                                Item = tempItem;
-                            }
-                        }
-                        else // If slot is free
-                        {
-                            if (slot.IsEquipSlot || IsEquipSlot)
-                                ModifyStats();
-                            PlaySound(slot.IsEquipSlot ? TPSound.AudioTypeEnum.WearItem :
-                                (IsEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.MoveItem));
-                            slot.Item = Item;
-                            Item = null;
-                        }
-                    }
+            if (IsEquipSlot)
+            {
+                if (slotEntered.IsEquipSlot)
+                {
+                    //Debug.Log("_From equip to equip"); - move
+                    if ((slotEntered.Item != null && (slotEntered.Item.Type == Item.Type || (Type == null && slotEntered.Type == null))) ||
+                        (slotEntered.Item == null && (slotEntered.Type == Item.Type || slotEntered.Type == null)))
+                        ChangeSlot(slotEntered, false);
+                    else
+                        PlaySound(TPSound.AudioTypeEnum.Failure);
+                }
+                else
+                {
+                    //Debug.Log("_From equip to normal"); - remove
+                    if((slotEntered.Item != null && (slotEntered.Item.Type == Type || Type == null)) || 
+                        (slotEntered.Item == null && (slotEntered.Type == Item.Type || slotEntered.Type == null)))
+                        ChangeSlot(slotEntered, true);
+                    else
+                        PlaySound(TPSound.AudioTypeEnum.Failure);
+                } 
+            }
+            else
+            {
+                if (slotEntered.IsEquipSlot)
+                {
+                    //Debug.Log("_From normal to equip"); - wear
+                    if ((slotEntered.Item != null && (slotEntered.Item.Type == Item.Type || slotEntered.Type == null)) ||
+                        (slotEntered.Item == null && (slotEntered.Type == Item.Type || slotEntered.Type == null)))
+                        ChangeSlot(slotEntered, true);
+                    else
+                        PlaySound(TPSound.AudioTypeEnum.Failure);
+                }
+                else
+                {
+                    //Debug.Log("_From normal to normal"); - move
+                    if ((slotEntered.Item != null && (slotEntered.Item.Type == Item.Type || (Type == null && slotEntered.Type == null))) ||
+                        (slotEntered.Item == null && (slotEntered.Type == Item.Type || slotEntered.Type == null)))
+                        ChangeSlot(slotEntered, false);
+                    else
+                        PlaySound(TPSound.AudioTypeEnum.Failure);
                 }
             }
+            DisableStick();
+        }
+
+        void DisableStick()
+        {
             canvasGroup.blocksRaycasts = true;
             actualTransform.position = basePosition;
             basePosition = Vector2.zero;
@@ -200,12 +211,12 @@ namespace TP_Inventory
                 if (Item.Type != null)
                 {
                     if (inventoryCreator.FindFreeNoEquipSlotWithType(Item.Type) != null)
-                        ChangeSlot(inventoryCreator.FindFreeNoEquipSlotWithType(Item.Type));
+                        ChangeSlot(inventoryCreator.FindFreeNoEquipSlotWithType(Item.Type), true);
                     else
-                        ChangeSlot(inventoryCreator.FindFreeNoEquipSlot());
+                        ChangeSlot(inventoryCreator.FindFreeNoEquipSlot(), true);
                 }
                 else
-                    ChangeSlot(inventoryCreator.FindFreeNoEquipSlot());
+                    ChangeSlot(inventoryCreator.FindFreeNoEquipSlot(), true);
             }
             else
             {
@@ -213,11 +224,11 @@ namespace TP_Inventory
                 if (Item.Type != null)
                 {
                     if (inventoryCreator.FindFreeEquipSlotWithType(Item.Type) != null)
-                        ChangeSlot(inventoryCreator.FindFreeEquipSlotWithType(Item.Type));
+                        ChangeSlot(inventoryCreator.FindFreeEquipSlotWithType(Item.Type), true);
                     else
                     {
                         if (inventoryCreator.FindFreeEquipSlot() != null)
-                            ChangeSlot(inventoryCreator.FindFreeEquipSlot());
+                            ChangeSlot(inventoryCreator.FindFreeEquipSlot(), true);
                         else
                         {
                             int length = inventoryCreator.Slots.Count;
@@ -226,7 +237,7 @@ namespace TP_Inventory
                                 if (inventoryCreator.Slots[i].Item)
                                     if (inventoryCreator.Slots[i].IsEquipSlot && inventoryCreator.Slots[i].Item.Type == Item.Type)
                                     {
-                                        ChangeSlot(inventoryCreator.Slots[i]);
+                                        ChangeSlot(inventoryCreator.Slots[i], true);
                                         return;
                                     }
                             }
@@ -237,18 +248,61 @@ namespace TP_Inventory
                 else
                 {
                     if (inventoryCreator.FindFreeEquipSlot() != null)
-                        ChangeSlot(inventoryCreator.FindFreeEquipSlot());
+                        ChangeSlot(inventoryCreator.FindFreeEquipSlot(), true);
                     else
                         PlaySound(TPSound.AudioTypeEnum.Failure);
                 }
             }
         }
 
-        void ChangeSlot(TPSlot slot)
+        //void changeslottest()
+        //{
+        //if (IsEquipSlot && slot.IsEquipSlot && (Item == null || slot.Item == null))
+        //{
+        //    Debug.Log("From equip to equip, empty");
+        //}
+        //if (IsEquipSlot && !slot.IsEquipSlot && (Item == null || slot.Item == null))
+        //{
+        //    Debug.Log("From equip to normal, empty");
+        //}
+        //if (!IsEquipSlot && slot.IsEquipSlot && (Item == null || slot.Item == null))
+        //{
+        //    Debug.Log("From normal to equip, empty");
+        //}
+        //if (!IsEquipSlot && !slot.IsEquipSlot && (Item == null || slot.Item == null))
+        //{
+        //    Debug.Log("From normal to normal, empty");
+        //}
+
+        //if (Item != null && slot.Item != null && IsEquipSlot && slot.IsEquipSlot)
+        //{
+        //    Debug.Log("from equip to equip both with items");
+        //}
+        //if (Item != null && slot.Item != null && !IsEquipSlot && slot.IsEquipSlot)
+        //{
+        //    Debug.Log("from normal to equip both with items");
+        //}
+        //if (Item != null && slot.Item != null && !IsEquipSlot && !slot.IsEquipSlot)
+        //{
+        //    Debug.Log("from normal to normal = move/replace - both with items");
+        //}
+        //if (Item != null && slot.Item != null && IsEquipSlot && !slot.IsEquipSlot)
+        //{
+        //    Debug.Log("from equip to normal = move/replace - both with items");
+        //}
+        //}
+
+        void ChangeSlot(TPSlot slot, bool toModify)
         {
-            ModifyStats();
-            slot.ModifyStats();
-            PlaySound(IsEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
+            if (toModify)
+            {
+                ModifyStats();
+                slot.ModifyStats();
+                PlaySound(IsEquipSlot ? TPSound.AudioTypeEnum.RemoveItem : TPSound.AudioTypeEnum.WearItem);
+            }
+            else
+                PlaySound(TPSound.AudioTypeEnum.MoveItem);
+
             var tempItem = slot.Item;
             slot.Item = Item;
             Item = tempItem;

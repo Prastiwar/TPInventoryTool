@@ -232,14 +232,12 @@ Prefab:
         type: 2}
       propertyPath: Type
       value: 
-      objectReference: {fileID: 11400000, guid: 3e1736e3b5299a94698fe284713fd479,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 114165303694328194, guid: 37a21ef21769bbb4ba1be89ef1c18693,
         type: 2}
       propertyPath: Type
       value: 
-      objectReference: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 114216847747217056, guid: 37a21ef21769bbb4ba1be89ef1c18693,
         type: 2}
       propertyPath: Type
@@ -254,8 +252,7 @@ Prefab:
         type: 2}
       propertyPath: Type
       value: 
-      objectReference: {fileID: 11400000, guid: 253d194d175f35f4fafd4059538b4712,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 114949994229955644, guid: 37a21ef21769bbb4ba1be89ef1c18693,
         type: 2}
       propertyPath: Type

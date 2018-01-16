@@ -12,4 +12,3 @@ MonoBehaviour:
   m_Name: Vitality
   m_EditorClassIdentifier: 
   Value: 100
-  HasChanged: 0
