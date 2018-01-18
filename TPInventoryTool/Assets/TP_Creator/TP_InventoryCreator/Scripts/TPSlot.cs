@@ -92,11 +92,12 @@ namespace TP_Inventory
                     onSelection();
                 if (IsSelected)
                     AutoEquip();
+
+                IsSelected = !IsSelected;
             }
             else
                 AutoEquip();
 
-            IsSelected = !IsSelected;
         }
 
         public virtual void OnBeginDrag(PointerEventData eventData)

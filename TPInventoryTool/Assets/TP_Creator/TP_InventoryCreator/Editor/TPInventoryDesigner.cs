@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using TP_Inventory;
+using UnityEditor.SceneManagement;
 
 namespace TP_InventoryEditor
 {
     [InitializeOnLoad]
     public class TPInventoryDesigner : EditorWindow
     {
+        public static TPInventoryDesigner window;
+        static string currentScene;
         public static TPInventoryGUIData EditorData;
         public static TPInventoryCreator InventoryCreator;
         GUISkin skin;
@@ -33,10 +36,23 @@ namespace TP_InventoryEditor
                 Debug.Log("You can't change Inventory Designer runtime!");
                 return;
             }
-            TPInventoryDesigner window = (TPInventoryDesigner)GetWindow(typeof(TPInventoryDesigner));
+            window = (TPInventoryDesigner)GetWindow(typeof(TPInventoryDesigner));
+            currentScene = EditorSceneManager.GetActiveScene().name;
+            EditorApplication.hierarchyWindowChanged += hierarchyWindowChanged;
             window.minSize = new Vector2(615, 330);
             window.maxSize = new Vector2(615, 330);
             window.Show();
+        }
+
+        static void hierarchyWindowChanged()
+        {
+            if (currentScene != EditorSceneManager.GetActiveScene().name)
+            {
+                if (TPInventoryToolsWindow.window)
+                    TPInventoryToolsWindow.window.Close();
+                if (window)
+                    window.Close();
+            }
         }
 
         void OnEnable()

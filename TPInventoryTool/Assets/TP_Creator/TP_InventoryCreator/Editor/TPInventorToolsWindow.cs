@@ -4,6 +4,7 @@ using TP_Inventory;
 using UnityEngine.Events;
 using System;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 
 namespace TP_InventoryEditor
 {
@@ -11,6 +12,7 @@ namespace TP_InventoryEditor
     public class TPInventoryToolsWindow : EditorWindow
     {
         public static TPInventoryToolsWindow window;
+        static string currentScene;
         public enum ToolEnum
         {
             Items,
@@ -43,11 +45,24 @@ namespace TP_InventoryEditor
         public static void OpenToolWindow(ToolEnum _tool)
         {
             window = (TPInventoryToolsWindow)GetWindow(typeof(TPInventoryToolsWindow));
+            currentScene = EditorSceneManager.GetActiveScene().name;
+            EditorApplication.hierarchyWindowChanged += hierarchyWindowChanged;
             window.minSize = new Vector2(425, 400);
             window.maxSize = new Vector2(425, 400);
             window.Show();
             tool = _tool;
             isSet = false;
+        }
+
+        static void hierarchyWindowChanged()
+        {
+            if (currentScene != EditorSceneManager.GetActiveScene().name)
+            {
+                if (TPInventoryDesigner.window)
+                    TPInventoryDesigner.window.Close();
+                if (window)
+                    window.Close();
+            }
         }
 
         void Update()
