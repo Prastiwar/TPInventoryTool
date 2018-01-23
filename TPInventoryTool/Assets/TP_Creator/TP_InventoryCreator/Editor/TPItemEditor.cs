@@ -12,20 +12,22 @@ namespace TP_InventoryEditor
         int length;
         TPItem item;
 
+        SerializedProperty _ID;
+
         void OnEnable()
         {
             item = (TPItem)target;
             Items = TPHelper.FindAssetsByType<TPItem>();
             length = Items.Count;
-            testxd = serializedObject.FindProperty("_ID");
+            _ID = serializedObject.FindProperty("_ID");
         }
-        SerializedProperty testxd;
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
             EditorGUILayout.LabelField("Custom Item");
-            EditorGUILayout.PropertyField(testxd);
+            EditorGUILayout.PropertyField(_ID);
 
             for (int i = 0; i < length; i++)
             {
@@ -33,7 +35,9 @@ namespace TP_InventoryEditor
                 {
                     if (item.ID == Items[i].ID)
                     {
-                        EditorGUILayout.HelpBox("ID is actually used, must be unique!", MessageType.Error);
+                        _ID.intValue++;
+                        Repaint();
+                        //EditorGUILayout.HelpBox("ID is actually used, must be unique!", MessageType.Error);
                         break;
                     }
                 }

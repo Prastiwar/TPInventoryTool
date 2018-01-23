@@ -315,6 +315,7 @@ namespace TP_InventoryEditor
             AssetDatabase.CreateAsset(newObj, AssetDatabase.GenerateUniqueAssetPath(assetPath));
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+            AssetDatabase.OpenAsset(newObj);
 
             Debug.Log(newObj.name + " created in Assets/" + TPInventoryDesigner.EditorData.InventoryAssetsPath + folderName);
             TPInventoryDesigner.UpdateManager();
