@@ -6,9 +6,10 @@ namespace TP_Inventory
 {
     public class TPInventoryCreator : MonoBehaviour
     {
-        [HideInInspector] public Transform SlotParentsTransform = null;
-        [HideInInspector] public List<TPSlot> Slots = new List<TPSlot>();
-        [HideInInspector] public TPInventoryData Data;
+        public static bool DebugMode;
+        public Transform SlotParentsTransform = null;
+        public TPInventoryData Data;
+        public List<TPSlot> Slots = new List<TPSlot>();
 
         enum Finder
         {

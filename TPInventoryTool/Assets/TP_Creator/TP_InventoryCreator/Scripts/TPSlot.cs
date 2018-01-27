@@ -13,12 +13,12 @@ namespace TP_Inventory
         Vector2 basePosition;
         CanvasGroup canvasGroup;
         Image Image;
-        TPItem _item;
+        [SerializeField] TPItem _item;
 
-        [HideInInspector] public TPType Type;
-        [HideInInspector] public bool IsEquipSlot;
-        [HideInInspector] public bool IsSelectable;
-        [HideInInspector] public bool IsSelected;
+        public TPType Type;
+        public bool IsEquipSlot;
+        public bool IsSelectable;
+        public bool IsSelected;
         public delegate void OnSelection();
         OnSelection onSelection;
 

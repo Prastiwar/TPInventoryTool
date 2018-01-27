@@ -16,16 +16,16 @@ namespace TP_Inventory
         public TPSound[] Sounds;
         public TPSlot OnSlot
         {
-            get { return slot; }
+            get { return _OnSlot; }
             set
             {
-                if (slot == null)
+                if (_OnSlot == null)
                     PlayGetItem();
-                slot = value;
+                _OnSlot = value;
             }
         }
 
-        TPSlot slot;
+        [SerializeField] TPSlot _OnSlot;
 
         void PlayGetItem()
         {

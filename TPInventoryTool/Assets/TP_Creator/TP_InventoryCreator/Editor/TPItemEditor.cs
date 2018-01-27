@@ -6,7 +6,7 @@ using UnityEngine;
 namespace TP_InventoryEditor
 {
     [CustomEditor(typeof(TPItem))]
-    public class TPItemEditor : ScriptlessInventoryEditor
+    internal class TPItemEditor : ScriptlessInventoryEditor
     {
         List<TPItem> Items = new List<TPItem>();
         int length;
@@ -37,7 +37,6 @@ namespace TP_InventoryEditor
                     {
                         _ID.intValue++;
                         Repaint();
-                        //EditorGUILayout.HelpBox("ID is actually used, must be unique!", MessageType.Error);
                         break;
                     }
                 }
@@ -49,11 +48,6 @@ namespace TP_InventoryEditor
             DrawPropertiesExcluding(serializedObject, new string[] { "_ID", "m_Script"});
 
             serializedObject.ApplyModifiedProperties();
-
-            if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(20)))
-            {
-                TPInventoryDesigner.OpenWindow();
-            }
         }
 
     }

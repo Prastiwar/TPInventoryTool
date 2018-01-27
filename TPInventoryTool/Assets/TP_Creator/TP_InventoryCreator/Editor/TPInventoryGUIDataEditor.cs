@@ -1,21 +1,26 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using TP_Inventory;
 
 namespace TP_InventoryEditor
 {
     [CustomEditor(typeof(TPInventoryGUIData))]
-    public class TPInventoryGUIDataEditor : ScriptlessInventoryEditor
+    internal class TPInventoryGUIDataEditor : ScriptlessInventoryEditor
     {
         TPInventoryGUIData TPInventoryEditorData;
 
         void OnEnable()
         {
             TPInventoryEditorData = (TPInventoryGUIData)target;
+            if (serializedObject.targetObject.hideFlags != HideFlags.NotEditable)
+                serializedObject.targetObject.hideFlags = HideFlags.NotEditable;
         }
 
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
+            EditorGUILayout.LabelField("Container for editor data");
+            if (!TPInventoryCreator.DebugMode)
+                return;
 
             EditorGUILayout.LabelField("GUI Skin");
             TPInventoryEditorData.GUISkin =

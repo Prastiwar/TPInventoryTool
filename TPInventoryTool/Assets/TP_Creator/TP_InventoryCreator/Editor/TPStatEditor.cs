@@ -1,25 +1,19 @@
 ﻿using TP_Inventory;
 using UnityEditor;
-using UnityEngine;
 
 namespace TP_InventoryEditor
 {
     [CustomEditor(typeof(TPStat))]
-    public class TPStatEditor : ScriptlessInventoryEditor
+    internal class TPStatEditor : ScriptlessInventoryEditor
     {
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
+            EditorGUILayout.LabelField("Statistic: " + serializedObject.targetObject.name);
 
-            EditorGUILayout.LabelField("Statistic");
-            base.OnInspectorGUI();
+            if (TPInventoryCreator.DebugMode)
+                DrawPropertiesExcluding(serializedObject, scriptField);
 
-            serializedObject.ApplyModifiedProperties();
-
-            if (GUILayout.Button("Open Inventory Manager", GUILayout.Height(20)))
-            {
-                TPInventoryDesigner.OpenWindow();
-            }
+            OpenCreator();
         }
     }
 }

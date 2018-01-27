@@ -9,7 +9,7 @@ using UnityEditor.SceneManagement;
 namespace TP_InventoryEditor
 {
     [InitializeOnLoad]
-    public class TPInventoryToolsWindow : EditorWindow
+    internal class TPInventoryToolsWindow : EditorWindow
     {
         public static TPInventoryToolsWindow window;
         static string currentScene;
@@ -290,18 +290,18 @@ namespace TP_InventoryEditor
             {
                 case ToolEnum.Items:
                     newObj = ScriptableObject.CreateInstance<TPItem>();
-                    folderName = "Items";
-                    assetPath += folderName + "/New Item.asset";
+                    folderName = "/Items";
+                    assetPath +=  "New Item.asset";
                     break;
                 case ToolEnum.Types:
                     newObj = ScriptableObject.CreateInstance<TPType>();
-                    folderName = "Types";
-                    assetPath += folderName + "/New Type.asset";
+                    folderName = "/Types";
+                    assetPath +=  "New Type.asset";
                     break;
                 case ToolEnum.Stats:
                     newObj = ScriptableObject.CreateInstance<TPStat>();
-                    folderName = "Stats";
-                    assetPath += folderName + "/New Stat.asset";
+                    folderName = "/Stats";
+                    assetPath += "New Stat.asset";
                     break;
                 case ToolEnum.Slots:
                     return;
@@ -311,7 +311,7 @@ namespace TP_InventoryEditor
 
             if (!AssetDatabase.IsValidFolder("Assets/" + TPInventoryDesigner.EditorData.InventoryAssetsPath + folderName))
                 System.IO.Directory.CreateDirectory("Assets/" + TPInventoryDesigner.EditorData.InventoryAssetsPath + folderName);
-
+            
             AssetDatabase.CreateAsset(newObj, AssetDatabase.GenerateUniqueAssetPath(assetPath));
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

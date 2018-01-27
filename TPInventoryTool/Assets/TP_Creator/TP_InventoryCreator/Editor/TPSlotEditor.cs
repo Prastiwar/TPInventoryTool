@@ -1,20 +1,45 @@
 ﻿using UnityEditor;
 using TP_Inventory;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace TP_InventoryEditor
 {
     [CustomEditor(typeof(TPSlot))]
-    public class TPSlotEditor : ScriptlessInventoryEditor
+    internal class TPSlotEditor : ScriptlessInventoryEditor
     {
+        TPSlot slot;
+        void OnEnable()
+        {
+            slot = target as TPSlot;
+        }
+
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
-
+            if (TPInventoryCreator.DebugMode)
+            {
+                if (slot.GetComponent<CanvasRenderer>().hideFlags != HideFlags.NotEditable)
+                    slot.GetComponent<CanvasRenderer>().hideFlags = HideFlags.NotEditable;
+                if (slot.GetComponent<CanvasGroup>().hideFlags != HideFlags.NotEditable)
+                    slot.GetComponent<CanvasGroup>().hideFlags = HideFlags.NotEditable;
+                if (slot.GetComponent<Image>().hideFlags != HideFlags.NotEditable)
+                    slot.GetComponent<Image>().hideFlags = HideFlags.NotEditable;
+            }
+            else
+            {
+                if (slot.GetComponent<CanvasRenderer>().hideFlags != HideFlags.HideInInspector)
+                    slot.GetComponent<CanvasRenderer>().hideFlags = HideFlags.HideInInspector;
+                if (slot.GetComponent<CanvasGroup>().hideFlags != HideFlags.HideInInspector)
+                    slot.GetComponent<CanvasGroup>().hideFlags = HideFlags.HideInInspector;
+                if (slot.GetComponent<Image>().hideFlags != HideFlags.HideInInspector)
+                    slot.GetComponent<Image>().hideFlags = HideFlags.HideInInspector;
+            }
             EditorGUILayout.LabelField("Inventory Slot");
 
-            DrawPropertiesExcluding(serializedObject, scriptField);
-            
-            serializedObject.ApplyModifiedProperties();
+            if (TPInventoryCreator.DebugMode)
+                DrawPropertiesExcluding(serializedObject, scriptField);
+
+            OpenCreator();
         }
     }
 }

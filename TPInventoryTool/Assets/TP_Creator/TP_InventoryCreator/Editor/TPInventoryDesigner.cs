@@ -6,7 +6,7 @@ using UnityEditor.SceneManagement;
 namespace TP_InventoryEditor
 {
     [InitializeOnLoad]
-    public class TPInventoryDesigner : EditorWindow
+    internal class TPInventoryDesigner : EditorWindow
     {
         public static TPInventoryDesigner window;
         static string currentScene;
@@ -221,6 +221,7 @@ namespace TP_InventoryEditor
             }
             else
             {
+                ToggleDebugMode();
                 ChangeParent();
                 SpawnEmpty();
                 ResetManager();
@@ -286,6 +287,22 @@ namespace TP_InventoryEditor
             }
         }
 
+        void ToggleDebugMode()
+        {
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Toggle Debug Mode", skin.button, GUILayout.Height(20)))
+            {
+                TPInventoryCreator.DebugMode = !TPInventoryCreator.DebugMode;
+                if (TPInventoryToolsWindow.window)
+                {
+                    UpdateManager();
+                    TPInventoryToolsWindow.window.Close();
+                }
+            }
+            GUILayout.Toggle(TPInventoryCreator.DebugMode, GUIContent.none, GUILayout.Width(15));
+            GUILayout.EndHorizontal();
+        }
+
         void ResetManager()
         {
             if (GUILayout.Button("Reset Manager", skin.button, GUILayout.Height(35)))
@@ -295,8 +312,12 @@ namespace TP_InventoryEditor
         public static void UpdateManager()
         {
             InitCreator();
-            InventoryCreator.RefreshSlots();
-            EditorUtility.SetDirty(InventoryCreator);
+            if (InventoryCreator)
+            {
+                InventoryCreator.RefreshSlots();
+                EditorUtility.SetDirty(InventoryCreator);
+                EditorUtility.SetDirty(InventoryCreator.Data);
+            }
         }
 
         void DrawTools()
