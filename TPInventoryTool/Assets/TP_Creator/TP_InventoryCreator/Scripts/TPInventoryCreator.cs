@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using TP_InventoryEditor;
+using TP.InventoryEditor;
 using UnityEngine;
 
-namespace TP_Inventory
+namespace TP.Inventory
 {
     public class TPInventoryCreator : MonoBehaviour
     {

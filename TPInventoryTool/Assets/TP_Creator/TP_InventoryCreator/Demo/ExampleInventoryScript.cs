@@ -1,4 +1,4 @@
-﻿using TP_Inventory;
+﻿using TP.Inventory;
 using UnityEngine;
 using UnityEngine.UI;
 

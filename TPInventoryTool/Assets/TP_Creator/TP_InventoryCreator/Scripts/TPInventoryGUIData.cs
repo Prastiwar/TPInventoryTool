@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TP_InventoryEditor
+namespace TP.InventoryEditor
 {
     public class TPInventoryGUIData : ScriptableObject
     {

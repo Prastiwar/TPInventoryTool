@@ -1,9 +1,9 @@
 ﻿using UnityEditor;
-using TP_Inventory;
+using TP.Inventory;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TP_InventoryEditor
+namespace TP.InventoryEditor
 {
     [CustomEditor(typeof(TPSlot))]
     internal class TPSlotEditor : ScriptlessInventoryEditor

@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using TP_Inventory;
+using TP.Inventory;
 using UnityEngine.Events;
 using System;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 
-namespace TP_InventoryEditor
+namespace TP.InventoryEditor
 {
     [InitializeOnLoad]
     internal class TPInventoryToolsWindow : EditorWindow

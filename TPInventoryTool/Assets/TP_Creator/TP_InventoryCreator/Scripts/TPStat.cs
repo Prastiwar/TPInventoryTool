@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TP_Inventory
+namespace TP.Inventory
 {
     public class TPStat : ScriptableObject
     {

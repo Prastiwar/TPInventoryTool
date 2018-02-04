@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace TP_Inventory
+namespace TP.Inventory
 {
     [RequireComponent(typeof(CanvasGroup))]
     [RequireComponent(typeof(Image))]

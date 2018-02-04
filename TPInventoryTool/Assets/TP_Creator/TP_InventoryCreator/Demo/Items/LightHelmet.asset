@@ -33,3 +33,4 @@ MonoBehaviour:
     AudioType: 5
   - AudioClip: {fileID: 8300000, guid: c50b9c81fc526824f900a8a82c45d0c7, type: 3}
     AudioType: 0
+  _OnSlot: {fileID: 0}

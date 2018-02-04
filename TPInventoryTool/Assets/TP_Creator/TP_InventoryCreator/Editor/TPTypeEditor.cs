@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
-using TP_Inventory;
+using TP.Inventory;
 
-namespace TP_InventoryEditor
+namespace TP.InventoryEditor
 {
     [CustomEditor(typeof(TPType))]
     internal class TPTypeEditor : ScriptlessInventoryEditor

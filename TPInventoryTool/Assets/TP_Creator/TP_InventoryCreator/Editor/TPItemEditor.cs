@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using TP_Inventory;
+using TP.Inventory;
 using UnityEditor;
 using UnityEngine;
 
-namespace TP_InventoryEditor
+namespace TP.InventoryEditor
 {
     [CustomEditor(typeof(TPItem))]
     internal class TPItemEditor : ScriptlessInventoryEditor

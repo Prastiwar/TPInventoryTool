@@ -5,7 +5,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-namespace TP_InventoryEditor
+namespace TP.InventoryEditor
 {
     public class TPHelper
     {

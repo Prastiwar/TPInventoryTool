@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace TP_Inventory
+namespace TP.Inventory
 {
     [System.Serializable]
     public class TPModifier
