@@ -11,14 +11,24 @@ namespace TP.Inventory
         public TPInventoryData Data;
         public List<TPSlot> Slots = new List<TPSlot>();
 
+        public delegate void OnInventoryChangeHandler();
+        OnInventoryChangeHandler OnBeforeAddItem;
+        OnInventoryChangeHandler OnAfterAddItem;
+        OnInventoryChangeHandler OnBeforeRemoveItem;
+        OnInventoryChangeHandler OnAfterRemoveItem;
+
         enum Finder
         {
-            EquipSlot,
-            EquipSlotWithType,
-            NoEquipSlot,
-            NoEquipSlotWithType,
+            FreeEquipSlot,
+            FreeEquipSlotWithType,
+            FreeNoEquipSlot,
+            FreeNoEquipSlotWithType,
             AnyFree,
-            AnyFreeWithType
+            AnyFreeWithType,
+
+            AnyWithItem,
+            EquipWithItem,
+            NoEquipWithItem
         }
 
         void OnValidate()
@@ -64,6 +74,68 @@ namespace TP.Inventory
             }
         }
 
+        public void SetOnBeforeAddItem(OnInventoryChangeHandler _OnBeforeAddItem)
+        {
+            OnBeforeAddItem = _OnBeforeAddItem;
+        }
+        public void SetOnAfterAddItem(OnInventoryChangeHandler _OnAfterAddItem)
+        {
+            OnAfterAddItem = _OnAfterAddItem;
+        }
+
+        public void SetOnBeforeRemoveItem(OnInventoryChangeHandler _OnBeforeRemoveItem)
+        {
+            OnBeforeRemoveItem = _OnBeforeRemoveItem;
+        }
+        public void SetOnAfterRemoveItem(OnInventoryChangeHandler _OnAfterRemoveItem)
+        {
+            OnAfterRemoveItem = _OnAfterRemoveItem;
+        }
+
+        public void AddItem(TPItem item)
+        {
+            if(OnBeforeAddItem != null)
+                OnBeforeAddItem();
+
+            FindAnyFreeSlotWithType(item.Type).Item = item;
+
+            if (OnAfterAddItem != null)
+                OnAfterAddItem();
+        }
+        public void AddItem(TPSlot slot, TPItem item)
+        {
+            if (OnBeforeAddItem != null)
+                OnBeforeAddItem();
+
+            if (slot.Type == item.Type
+                || slot.Type == null)
+            {
+                slot.Item = item;
+            }
+            else
+            {
+                Debug.LogError("You're trying to add Item to Slot with different types!");
+            }
+
+            if (OnAfterAddItem != null)
+                OnAfterAddItem();
+        }
+
+        public void RemoveItem(TPItem item)
+        {
+            FindAnySlotWith(item).Item = null;
+        }
+        public void RemoveItem(TPSlot slot)
+        {
+            if (OnAfterRemoveItem != null)
+                OnAfterRemoveItem();
+
+            slot.Item = null;
+
+            if (OnAfterRemoveItem != null)
+                OnAfterRemoveItem();
+        }
+        
         public bool IsFull()
         {
             return FreeSlotsLength() != 0 ? false : true;
@@ -102,52 +174,65 @@ namespace TP.Inventory
             return freeSlots;
         }
 
+        public TPSlot FindAnySlotWith(TPItem item)
+        {
+            return FindSlot(Finder.AnyWithItem, null, item);
+        }
+        public TPSlot FindEquipSlotWith(TPItem item)
+        {
+            return FindSlot(Finder.EquipWithItem, null, item);
+        }
+        public TPSlot FindNoEquipSlotWith(TPItem item)
+        {
+            return FindSlot(Finder.NoEquipWithItem, null, item);
+        }
+
         public TPSlot FindAnyFreeSlot()
         {
-            return FindSlot(Finder.AnyFree, null);
+            return FindSlot(Finder.AnyFree, null, null);
         }
         public TPSlot FindAnyFreeSlotWithType(TPType type)
         {
-            return FindSlot(Finder.AnyFreeWithType, type);
+            return FindSlot(Finder.AnyFreeWithType, type, null);
         }
 
         public TPSlot FindFreeEquipSlot()
         {
-            return FindSlot(Finder.EquipSlot, null);
+            return FindSlot(Finder.FreeEquipSlot, null, null);
         }
         public TPSlot FindFreeEquipSlotWithType(TPType type)
         {
-            return FindSlot(Finder.EquipSlotWithType, type);
+            return FindSlot(Finder.FreeEquipSlotWithType, type, null);
         }
 
         public TPSlot FindFreeNoEquipSlot()
         {
-            return FindSlot(Finder.NoEquipSlot, null);
+            return FindSlot(Finder.FreeNoEquipSlot, null, null);
         }
         public TPSlot FindFreeNoEquipSlotWithType(TPType type)
         {
-            return FindSlot(Finder.NoEquipSlotWithType, type);
+            return FindSlot(Finder.FreeNoEquipSlotWithType, type, null);
         }
 
-        bool GetFindBool(Finder finder, TPType type, int indexer)
+        bool GetFindBool(Finder finder, TPType type, TPItem item, int indexer)
         {
             bool boolean = false;
 
             switch (finder)
             {
-                case Finder.EquipSlot:
+                case Finder.FreeEquipSlot:
                     boolean = Slots[indexer].Item == null &&
                         Slots[indexer].IsEquipSlot && Slots[indexer].Type == null;
                     break;
-                case Finder.EquipSlotWithType:
+                case Finder.FreeEquipSlotWithType:
                     boolean = Slots[indexer].Item == null &&
                         Slots[indexer].IsEquipSlot && Slots[indexer].Type == type;
                     break;
-                case Finder.NoEquipSlot:
+                case Finder.FreeNoEquipSlot:
                     boolean = Slots[indexer].Item == null &&
                         !Slots[indexer].IsEquipSlot && Slots[indexer].Type == null;
                     break;
-                case Finder.NoEquipSlotWithType:
+                case Finder.FreeNoEquipSlotWithType:
                     boolean = Slots[indexer].Item == null &&
                         !Slots[indexer].IsEquipSlot && Slots[indexer].Type == type;
                     break;
@@ -158,6 +243,18 @@ namespace TP.Inventory
                     boolean = Slots[indexer].Item == null &&
                         Slots[indexer].Type == type;
                     break;
+
+                case Finder.AnyWithItem:
+                    boolean = Slots[indexer].Item == item;
+                    break;
+                case Finder.EquipWithItem:
+                    boolean = Slots[indexer].Item == item &&
+                        Slots[indexer].IsEquipSlot;
+                    break;
+                case Finder.NoEquipWithItem:
+                    boolean = Slots[indexer].Item == item &&
+                        !Slots[indexer].IsEquipSlot;
+                    break;
                 default:
                     break;
             }
@@ -165,19 +262,17 @@ namespace TP.Inventory
             return boolean;
         }
 
-        TPSlot FindSlot(Finder finder, TPType type)
+        TPSlot FindSlot(Finder finder, TPType type, TPItem item)
         {
-            TPSlot freeSlot = null;
             int length = Slots.Count;
             for (int i = 0; i < length; i++)
             {
-                if (GetFindBool(finder, type, i))
+                if (GetFindBool(finder, type, item, i))
                 {
-                    freeSlot = Slots[i];
-                    return freeSlot;
+                    return Slots[i];
                 }
             }
-            return freeSlot;
+            return null;
         }
     }
 }
