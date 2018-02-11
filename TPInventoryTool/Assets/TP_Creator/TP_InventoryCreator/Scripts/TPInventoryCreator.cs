@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TP.InventoryEditor;
+using TP.Utilities;
 using UnityEngine;
 
 namespace TP.Inventory
@@ -42,12 +43,13 @@ namespace TP.Inventory
 #if UNITY_EDITOR
         void FindData()
         {
-            TPInventoryGUIData guiData = (TPInventoryGUIData)UnityEditor.AssetDatabase.LoadAssetAtPath(
-                    "Assets/TP_Creator/TP_InventoryCreator/EditorResources/InventoryEditorGUIData.asset",
-                    typeof(TPInventoryGUIData));
+            string path = "Assets/TP_Creator/_CreatorResources/";
+
+            TPEditorGUIData guiData = (TPEditorGUIData)UnityEditor.AssetDatabase.LoadAssetAtPath(path + "InventoryEditorGUIData.asset",
+                    typeof(TPEditorGUIData));
             if (guiData != null)
                 Data = (TPInventoryData)UnityEditor.AssetDatabase.LoadAssetAtPath(
-                    "Assets/" + guiData.InventoryDataPath + "InventoryData.asset", typeof(TPInventoryData));
+                    guiData.Paths[0] + "InventoryData.asset", typeof(TPInventoryData));
         }
 #endif
         void Awake()
@@ -123,12 +125,18 @@ namespace TP.Inventory
 
         public void RemoveItem(TPItem item)
         {
+            if (OnBeforeRemoveItem != null)
+                OnBeforeRemoveItem();
+
             FindAnySlotWith(item).Item = null;
+
+            if (OnAfterRemoveItem != null)
+                OnAfterRemoveItem();
         }
         public void RemoveItem(TPSlot slot)
         {
-            if (OnAfterRemoveItem != null)
-                OnAfterRemoveItem();
+            if (OnBeforeRemoveItem != null)
+                OnBeforeRemoveItem();
 
             slot.Item = null;
 

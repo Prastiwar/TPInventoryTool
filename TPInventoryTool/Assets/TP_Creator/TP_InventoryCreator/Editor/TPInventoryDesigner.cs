@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using TP.Inventory;
+using TP.Utilities;
 using UnityEditor.SceneManagement;
 
 namespace TP.InventoryEditor
@@ -10,7 +11,7 @@ namespace TP.InventoryEditor
     {
         public static TPInventoryDesigner window;
         static string currentScene;
-        public static TPInventoryGUIData EditorData;
+        public static TPEditorGUIData EditorData;
         public static TPInventoryCreator InventoryCreator;
         GUISkin skin;
 
@@ -72,9 +73,12 @@ namespace TP.InventoryEditor
 
         void InitEditorData()
         {
-            EditorData = AssetDatabase.LoadAssetAtPath(
-                   "Assets/TP_Creator/TP_InventoryCreator/EditorResources/InventoryEditorGUIData.asset",
-                   typeof(TPInventoryGUIData)) as TPInventoryGUIData;
+            string path = "Assets/TP_Creator/_CreatorResources/";
+            if (!System.IO.Directory.Exists(path))
+                System.IO.Directory.CreateDirectory(path);
+
+            EditorData = AssetDatabase.LoadAssetAtPath(path + "InventoryEditorGUIData.asset",
+                   typeof(TPEditorGUIData)) as TPEditorGUIData;
             
             if (EditorData == null)
                 CreateEditorData();
@@ -86,29 +90,44 @@ namespace TP.InventoryEditor
 
         void CheckGUIData()
         {
+            string pathData = "Assets/TP_Creator/TP_InventoryCreator/InventoryData/";
+            if (!System.IO.Directory.Exists(pathData))
+                System.IO.Directory.CreateDirectory(pathData);
+
+            if (EditorData.Paths == null || EditorData.Paths.Length < 2)
+            {
+                EditorData.Paths = new string[2];
+            }
+
             if (EditorData.GUISkin == null)
                 EditorData.GUISkin = AssetDatabase.LoadAssetAtPath(
-                      "Assets/TP_Creator/TP_InventoryCreator/EditorResources/TPInventoryGUISkin.guiskin",
+                      "Assets/TP_Creator/_CreatorResources/TPEditorGUISkin.guiskin",
                       typeof(GUISkin)) as GUISkin;
 
-            if (EditorData.InventoryDataPath == null || EditorData.InventoryAssetsPath.Length < 5)
-                EditorData.InventoryDataPath = "TP_Creator/TP_InventoryCreator/InventoryData/";
+            if (EditorData.Paths[0] == null || EditorData.Paths[0].Length < 5)
+                EditorData.Paths[0] = pathData;
 
-            if (EditorData.InventoryAssetsPath == null || EditorData.InventoryAssetsPath.Length < 5)
-                EditorData.InventoryAssetsPath = "TP_Creator/TP_InventoryCreator/InventoryData/";
+            if (EditorData.Paths[1] == null || EditorData.Paths[1].Length < 5)
+                EditorData.Paths[1] = pathData;
 
-            if (EditorData.InventoryPrefab == null)
-                EditorData.InventoryPrefab = AssetDatabase.LoadAssetAtPath(
-                    "Assets/TP_Creator/TP_InventoryCreator/EditorResources/TPInventoryCanvas.prefab",
+            if (EditorData.Prefab == null)
+                EditorData.Prefab = AssetDatabase.LoadAssetAtPath(
+                    "Assets/TP_Creator/_CreatorResources/TPInventoryCanvas.prefab",
                     typeof(GameObject)) as GameObject;
+
+            if (EditorData.GUISkin == null)
+            {
+                window.Close();
+                Debug.LogError("There is no guiskin for TPEditor!");
+            }
 
             EditorUtility.SetDirty(EditorData);
         }
 
         void CreateEditorData()
         {
-            TPInventoryGUIData newEditorData = ScriptableObject.CreateInstance<TPInventoryGUIData>();
-            AssetDatabase.CreateAsset(newEditorData, "Assets/TP_Creator/TP_InventoryCreator/EditorResources/InventoryEditorGUIData.asset");
+            TPEditorGUIData newEditorData = ScriptableObject.CreateInstance<TPEditorGUIData>();
+            AssetDatabase.CreateAsset(newEditorData, "Assets/TP_Creator/_CreatorResources/InventoryEditorGUIData.asset");
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             EditorData = newEditorData;
@@ -143,7 +162,7 @@ namespace TP.InventoryEditor
                     UpdateManager();
             }
 
-            var data = AssetDatabase.LoadAssetAtPath("Assets/" + EditorData.InventoryDataPath + "InventoryData" + ".asset",
+            var data = AssetDatabase.LoadAssetAtPath(EditorData.Paths[0] + "InventoryData" + ".asset",
                 typeof(TPInventoryData));
 
             if (data == null)
@@ -154,12 +173,7 @@ namespace TP.InventoryEditor
 
         static void CreateInventoryData()
         {
-            string path = "Assets/" + EditorData.InventoryDataPath + "InventoryData" + ".asset";
-            if (AssetDatabase.IsValidFolder(path))
-            {
-                Debug.Log("This path doesn't exist, create one!");
-                return;
-            }
+            string path = EditorData.Paths[0] + "InventoryData" + ".asset";
 
             TPInventoryData newData = ScriptableObject.CreateInstance<TPInventoryData>();
             AssetDatabase.CreateAsset(newData, path);
@@ -258,12 +272,12 @@ namespace TP.InventoryEditor
         {
             if (GUILayout.Button("Spawn empty inventory hierarchy", skin.button, GUILayout.Height(40)))
             {
-                if (EditorData.InventoryPrefab == null)
+                if (EditorData.Prefab == null)
                 {
-                    Debug.LogError("There is no inventory prefab in InventoryEditorGUIData file!");
+                    Debug.LogError("There is no inventory prefab named 'TPInventoryCanvas' in Creator Resource folder!");
                     return;
                 }
-                Instantiate(EditorData.InventoryPrefab);
+                Instantiate(EditorData.Prefab);
                 Debug.Log("Inventory Hierarchy Created");
             }
         }

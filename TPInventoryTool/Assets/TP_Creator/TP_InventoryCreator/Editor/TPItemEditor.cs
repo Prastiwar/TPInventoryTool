@@ -17,7 +17,7 @@ namespace TP.InventoryEditor
         void OnEnable()
         {
             item = (TPItem)target;
-            Items = TPHelper.FindAssetsByType<TPItem>();
+            Items = Utilities.TPFind.FindAssetsByType<TPItem>();
             length = Items.Count;
             _ID = serializedObject.FindProperty("_ID");
         }

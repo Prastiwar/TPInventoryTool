@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TP.Inventory;
+using TP.Utilities;
 using UnityEngine;
 
 namespace TP.InventoryEditor
@@ -17,9 +18,9 @@ namespace TP.InventoryEditor
         }
         public void Refresh()
         {
-            Items = TPHelper.FindAssetsByType<TPItem>();
-            Stats = TPHelper.FindAssetsByType<TPStat>();
-            Types = TPHelper.FindAssetsByType<TPType>();
+            Items = TPFind.FindAssetsByType<TPItem>();
+            Stats = TPFind.FindAssetsByType<TPStat>();
+            Types = TPFind.FindAssetsByType<TPType>();
         }
 #endif
     }
