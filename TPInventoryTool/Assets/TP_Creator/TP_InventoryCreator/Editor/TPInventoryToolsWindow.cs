@@ -282,7 +282,7 @@ namespace TP.InventoryEditor
 
         void CreateScriptable()
         {
-            string assetPath = TPInventoryDesigner.EditorData.Paths[1];
+            string assetPath = TPInventoryDesigner.EditorData.Paths[0];
             string folderName = "";
             UnityEngine.Object newObj = null;
 
@@ -305,15 +305,15 @@ namespace TP.InventoryEditor
                     break;
             }
 
-            if (!AssetDatabase.IsValidFolder(TPInventoryDesigner.EditorData.Paths[1] + folderName))
-                System.IO.Directory.CreateDirectory(TPInventoryDesigner.EditorData.Paths[1] + folderName);
+            if (!AssetDatabase.IsValidFolder(TPInventoryDesigner.EditorData.Paths[0] + folderName))
+                System.IO.Directory.CreateDirectory(TPInventoryDesigner.EditorData.Paths[0] + folderName);
             
             AssetDatabase.CreateAsset(newObj, AssetDatabase.GenerateUniqueAssetPath(assetPath));
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             AssetDatabase.OpenAsset(newObj);
 
-            Debug.Log(newObj.name + " created in " + TPInventoryDesigner.EditorData.Paths[1] + folderName);
+            Debug.Log(newObj.name + " created in " + TPInventoryDesigner.EditorData.Paths[0] + folderName);
             TPInventoryDesigner.UpdateManager();
             SetToolWindow();
         }

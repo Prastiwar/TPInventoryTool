@@ -94,9 +94,9 @@ namespace TP.InventoryEditor
             if (!System.IO.Directory.Exists(pathData))
                 System.IO.Directory.CreateDirectory(pathData);
 
-            if (EditorData.Paths == null || EditorData.Paths.Length < 2)
+            if (EditorData.Paths == null || EditorData.Paths.Length < 1)
             {
-                EditorData.Paths = new string[2];
+                EditorData.Paths = new string[1];
             }
 
             if (EditorData.GUISkin == null)
@@ -106,9 +106,6 @@ namespace TP.InventoryEditor
 
             if (EditorData.Paths[0] == null || EditorData.Paths[0].Length < 5)
                 EditorData.Paths[0] = pathData;
-
-            if (EditorData.Paths[1] == null || EditorData.Paths[1].Length < 5)
-                EditorData.Paths[1] = pathData;
 
             if (EditorData.Prefab == null)
                 EditorData.Prefab = AssetDatabase.LoadAssetAtPath(
