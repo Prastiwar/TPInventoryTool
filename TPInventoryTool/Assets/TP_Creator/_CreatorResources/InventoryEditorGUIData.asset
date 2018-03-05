@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 1646894871, guid: 8a6a3f5bc1b279247851ac75c6158cd7, type: 3}
   m_Name: InventoryEditorGUIData
   m_EditorClassIdentifier: 
-  GUISkin: {fileID: 0}
-  Prefab: {fileID: 0}
-  Paths: []
+  GUISkin: {fileID: 11400000, guid: af0cada3f5c6833429629cea45077b9c, type: 2}
+  Prefab: {fileID: 1832101627673266, guid: 91a3c3a2cc0083b468ddb2838c3ffb45, type: 2}
+  Paths:
+  - Assets/TP_Creator/TP_InventoryCreator/InventoryData/

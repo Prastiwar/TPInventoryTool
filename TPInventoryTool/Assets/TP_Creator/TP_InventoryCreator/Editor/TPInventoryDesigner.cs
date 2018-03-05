@@ -114,7 +114,6 @@ namespace TP.InventoryEditor
 
             if (EditorData.GUISkin == null)
             {
-                window.Close();
                 Debug.LogError("There is no guiskin for TPEditor!");
             }
 
