@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;
+﻿/**
+*   Authored by Tomasz Piowczyk
+*   Copyright 2018 You're allowed to make changes in functionality and use for commercial or personal.
+*   You're not allowed to claim ownership of this script. 
+*   https://github.com/Prastiwar/TPInventoryTool
+*   Unity 2017.3.0f
+*/
+using System.Collections.Generic;
 using TP.InventoryEditor;
 using TP.Utilities;
 using UnityEngine;
