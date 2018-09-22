@@ -1,3 +1,5 @@
+# **This is an archived repository. Probably you want to check my** [TPFramework](https://github.com/Prastiwar/TPFrameworkUnity) **where it is merged into.**
+
 # TPInventoryTool
 Tool for making your own Inventory and implement it to your game.
 #### Full documentation: https://github.com/Prastiwar/TPInventoryTool/blob/master/InventoryDocumentation.docx
